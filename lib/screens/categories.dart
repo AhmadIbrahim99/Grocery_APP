@@ -40,7 +40,7 @@ class CategoriesScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: GridView.count(
           crossAxisCount: 2,
-          childAspectRatio: 300 / 240,
+          childAspectRatio: 250 / 240,
           crossAxisSpacing: 11,
           mainAxisSpacing: 11,
           children: List.generate(
