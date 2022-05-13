@@ -5,6 +5,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/services/utils.dart';
+import 'package:grocery_app/widgets/heart_btn.dart';
 import 'package:grocery_app/widgets/price_widget.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
 
@@ -78,16 +79,7 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                             const SizedBox(
                               width: 5,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                print("Heart Is Here YAAAAAAAY!!!!");
-                              },
-                              child: Icon(
-                                IconlyLight.heart,
-                                size: 21,
-                                color: color,
-                              ),
-                            ),
+                            const HeartButton(),
                           ],
                         ),
                       ],
