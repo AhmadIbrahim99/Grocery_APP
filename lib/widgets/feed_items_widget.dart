@@ -17,7 +17,14 @@ class FeedsWidget extends StatefulWidget {
 }
 
 class _FeedsWidgetState extends State<FeedsWidget> {
-  final _quantityTextController = TextEditingController(text: '1');
+  final _quantityTextController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    _quantityTextController.text = '1';
+    super.initState();
+  }
+
   @override
   void dispose() {
     _quantityTextController.dispose();
@@ -65,31 +72,45 @@ class _FeedsWidgetState extends State<FeedsWidget> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const PriceWidget(),
+                    Flexible(
+                      flex: 4,
+                      child: PriceWidget(
+                          salesPrice: 2.99,
+                          price: 5.9,
+                          textPrice: _quantityTextController.text,
+                          isOnSale: true),
+                    ),
                     const SizedBox(
                       width: 7,
                     ),
                     Flexible(
                       child: Row(
                         children: [
-                          FittedBox(
-                            child: TextWidget(
-                              text: 'KG',
-                              color: color,
-                              textSize: 17,
-                              isTilte: true,
+                          Flexible(
+                            flex: 1,
+                            child: FittedBox(
+                              child: TextWidget(
+                                text: 'KG',
+                                color: color,
+                                textSize: 17,
+                                isTilte: true,
+                              ),
                             ),
                           ),
                           const SizedBox(
                             width: 5,
                           ),
                           Flexible(
+                            flex: 2,
                             child: TextFormField(
                               controller: _quantityTextController,
                               key: const ValueKey('10'),
                               style: TextStyle(color: color, fontSize: 18),
                               keyboardType: TextInputType.number,
                               maxLines: 1,
+                              onChanged: (value) {
+                                setState(() {});
+                              },
                               enabled: true,
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
