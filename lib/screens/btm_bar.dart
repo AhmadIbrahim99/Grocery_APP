@@ -21,7 +21,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
   int _selectedIndex = 0;
   final List<Map<String, dynamic>> _pageList = [
     {'page': const HomeScreen(), 'title': 'Home'},
-    {'page': const CategoriesScreen(), 'title': 'Categories'},
+    {'page': CategoriesScreen(), 'title': 'Categories'},
     {'page': const CartScreen(), 'title': 'Cart'},
     {'page': const UserScreen(), 'title': 'User'}
   ];
