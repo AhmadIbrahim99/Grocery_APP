@@ -9,4 +9,5 @@ class Utils {
 
   bool get getThem => Provider.of<DarkThemeProvider>(context).getDarkTheme;
   Color get getColor => getThem ? Colors.white : Colors.black;
+  Size get getScreenSize => MediaQuery.of(context).size;
 }
