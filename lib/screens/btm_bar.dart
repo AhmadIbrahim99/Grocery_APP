@@ -1,14 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/provider/dark_theme_provider.dart';
-import 'package:grocery_app/screens/cart.dart';
 import 'package:grocery_app/screens/categories.dart';
 import 'package:grocery_app/screens/home_screen.dart';
 import 'package:grocery_app/screens/user.dart';
 import 'package:provider/provider.dart';
+
+import 'cart/cart_screen.dart';
 
 class BottomBarScreen extends StatefulWidget {
   const BottomBarScreen({Key? key}) : super(key: key);

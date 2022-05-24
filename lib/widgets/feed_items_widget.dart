@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/inner_screens/product_details.dart';
+import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/services/utils.dart';
 import 'package:grocery_app/widgets/heart_btn.dart';
 import 'package:grocery_app/widgets/price_widget.dart';
@@ -42,7 +44,10 @@ class _FeedsWidgetState extends State<FeedsWidget> {
         borderRadius: BorderRadius.circular(12),
         color: Theme.of(context).cardColor,
         child: InkWell(
-          onTap: () {},
+          onTap: () => GlobalMethods.navigateTo(
+            ctx: context,
+            name: ProductDetailScreen.routeName,
+          ),
           borderRadius: BorderRadius.circular(12),
           child: Column(
             children: [
@@ -87,7 +92,7 @@ class _FeedsWidgetState extends State<FeedsWidget> {
                       child: Row(
                         children: [
                           Flexible(
-                            flex: 1,
+                            flex: 3,
                             child: FittedBox(
                               child: TextWidget(
                                 text: 'KG',

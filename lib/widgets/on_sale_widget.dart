@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/inner_screens/product_details.dart';
+import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/services/utils.dart';
 import 'package:grocery_app/widgets/heart_btn.dart';
 import 'package:grocery_app/widgets/price_widget.dart';
@@ -30,7 +32,10 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
         borderRadius: BorderRadius.circular(12),
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
-          onTap: () {},
+          onTap: () => GlobalMethods.navigateTo(
+            ctx: context,
+            name: ProductDetailScreen.routeName,
+          ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
