@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/services/utils.dart';
+import 'package:grocery_app/widgets/back_widget.dart';
 import 'package:grocery_app/widgets/heart_btn.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
 
@@ -30,16 +31,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final Color color = Utils(context).getColor;
     return Scaffold(
       appBar: AppBar(
-        leading: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: () =>
-              Navigator.canPop(context) ? Navigator.pop(context) : null,
-          child: Icon(
-            IconlyLight.arrowLeft2,
-            color: color,
-            size: 24,
-          ),
-        ),
+        leading: const BackWidget(),
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),

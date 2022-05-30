@@ -4,6 +4,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/provider/dark_theme_provider.dart';
+import 'package:grocery_app/screens/whishlist/whishlist_screen.dart';
+import 'package:grocery_app/services/global_methods.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/text_widget.dart';
@@ -93,7 +95,8 @@ class _UserScreenState extends State<UserScreen> {
                     color: color,
                     title: "Whishlist",
                     icon: IconlyLight.heart,
-                    onPressed: () {}),
+                    onPressed: () => GlobalMethods.navigateTo(
+                        ctx: context, name: WhishListScreen.routeName)),
                 _listTiles(
                     color: color,
                     title: "Viewed",
@@ -125,7 +128,9 @@ class _UserScreenState extends State<UserScreen> {
                     color: color,
                     title: "Logout",
                     icon: IconlyLight.logout,
-                    onPressed: () => _showLogoutDialog(
+                    onPressed: () => GlobalMethods.warningDialog(
+                        function: () => print("Log Out"),
+                        context: context,
                         hintText: "Are you sure you wanna leave Us ??!",
                         textButton: "Yes",
                         title: "Sign out")),
@@ -135,53 +140,6 @@ class _UserScreenState extends State<UserScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _showLogoutDialog(
-      {required title, required hintText, required textButton}) async {
-    await showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Row(
-              children: [
-                Image.asset(
-                  'assets/images/warning-sign.png',
-                  height: 30,
-                  width: 30,
-                  fit: BoxFit.fill,
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                Text(title)
-              ],
-            ),
-            content: Text(hintText),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  if (!Navigator.canPop(context)) return;
-
-                  Navigator.pop(context);
-                },
-                child: TextWidget(
-                  color: Colors.cyan,
-                  text: "Cancel",
-                  textSize: 18,
-                ),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: TextWidget(
-                  color: Colors.red,
-                  text: textButton,
-                  textSize: 18,
-                ),
-              )
-            ],
-          );
-        });
   }
 
   Future<void> _showDialog(
