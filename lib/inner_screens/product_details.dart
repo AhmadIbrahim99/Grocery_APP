@@ -148,7 +148,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _quantityController(
-                        fct: () {},
+                        fct: () {
+                          if (_qTEC.text == "1") return;
+
+                          setState(() {
+                            _qTEC.text = (int.parse(_qTEC.text) - 1).toString();
+                          });
+                        },
                         icon: CupertinoIcons.minus,
                         color: Colors.red,
                       ),
@@ -182,7 +188,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         width: 5.0,
                       ),
                       _quantityController(
-                        fct: () {},
+                        fct: () {
+                          setState(() {
+                            _qTEC.text = (int.parse(_qTEC.text) + 1).toString();
+                          });
+                        },
                         icon: CupertinoIcons.plus,
                         color: Colors.green,
                       ),
@@ -226,7 +236,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       isTilte: true,
                                     ),
                                     TextWidget(
-                                      text: 'Kg',
+                                      text: '${_qTEC.text}Kg',
                                       color: color,
                                       textSize: 16,
                                       isTilte: false,
