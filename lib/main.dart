@@ -7,6 +7,7 @@ import 'package:grocery_app/provider/dark_theme_provider.dart';
 import 'package:grocery_app/screens/Home_Screen.dart';
 import 'package:grocery_app/screens/btm_bar.dart';
 import 'package:grocery_app/screens/order/orders_screen.dart';
+import 'package:grocery_app/screens/viewed_recently/viewed_recently_screen.dart';
 import 'package:grocery_app/screens/whishlist/whishlist_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -55,6 +56,8 @@ class _MyAppState extends State<MyApp> {
                   const ProductDetailScreen(),
               WhishListScreen.routeName: (context) => const WhishListScreen(),
               OrdersScreen.routeName: (context) => const OrdersScreen(),
+              ViewedRecentlyScreen.roteName: (context) =>
+                  const ViewedRecentlyScreen(),
             },
           );
         },

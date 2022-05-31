@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/provider/dark_theme_provider.dart';
 import 'package:grocery_app/screens/order/orders_screen.dart';
+import 'package:grocery_app/screens/viewed_recently/viewed_recently_screen.dart';
 import 'package:grocery_app/screens/whishlist/whishlist_screen.dart';
 import 'package:grocery_app/services/global_methods.dart';
 import 'package:provider/provider.dart';
@@ -102,10 +103,12 @@ class _UserScreenState extends State<UserScreen> {
                       ctx: context, name: WhishListScreen.routeName),
                 ),
                 _listTiles(
-                    color: color,
-                    title: "Viewed",
-                    icon: IconlyLight.show,
-                    onPressed: () {}),
+                  color: color,
+                  title: "Viewed",
+                  icon: IconlyLight.show,
+                  onPressed: () => GlobalMethods.navigateTo(
+                      ctx: context, name: ViewedRecentlyScreen.roteName),
+                ),
                 _listTiles(
                     color: color,
                     title: "Forget Password",
