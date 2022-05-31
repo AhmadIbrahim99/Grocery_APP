@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/provider/dark_theme_provider.dart';
+import 'package:grocery_app/screens/order/orders_screen.dart';
 import 'package:grocery_app/screens/whishlist/whishlist_screen.dart';
 import 'package:grocery_app/services/global_methods.dart';
 import 'package:provider/provider.dart';
@@ -87,16 +88,19 @@ class _UserScreenState extends State<UserScreen> {
                       textButton: "Update"),
                 ),
                 _listTiles(
-                    color: color,
-                    title: "Orders",
-                    icon: IconlyLight.bag,
-                    onPressed: () {}),
+                  color: color,
+                  title: "Orders",
+                  icon: IconlyLight.bag,
+                  onPressed: () => GlobalMethods.navigateTo(
+                      ctx: context, name: OrdersScreen.routeName),
+                ),
                 _listTiles(
-                    color: color,
-                    title: "Whishlist",
-                    icon: IconlyLight.heart,
-                    onPressed: () => GlobalMethods.navigateTo(
-                        ctx: context, name: WhishListScreen.routeName)),
+                  color: color,
+                  title: "Whishlist",
+                  icon: IconlyLight.heart,
+                  onPressed: () => GlobalMethods.navigateTo(
+                      ctx: context, name: WhishListScreen.routeName),
+                ),
                 _listTiles(
                     color: color,
                     title: "Viewed",
