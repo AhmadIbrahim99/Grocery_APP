@@ -9,6 +9,7 @@ import 'package:grocery_app/widgets/back_widget.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
 
 import '../../services/global_methods.dart';
+import '../../widgets/empty_screen.dart';
 
 class WhishListScreen extends StatelessWidget {
   static const routeName = "/WhishListScreen";
@@ -18,36 +19,44 @@ class WhishListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;
     final Size size = Utils(context).getScreenSize;
-    return Scaffold(
-      appBar: AppBar(
-          leading: const BackWidget(),
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 0,
-          centerTitle: true,
-          title: TextWidget(
-            text: 'Whishlist (2)',
-            color: color,
-            textSize: 22,
-            isTilte: true,
-          ),
-          actions: [
-            IconButton(
-                onPressed: () => GlobalMethods.warningDialog(
-                    function: () => log("Delete your Whishlist?!!"),
-                    title: 'Empty your Whishlist?!',
-                    hintText: 'Are you sure?!!',
-                    textButton: 'yes',
-                    context: context),
-                color: color,
-                icon: const Icon(IconlyLight.delete))
-          ]),
-      body: MasonryGridView.count(
-        crossAxisCount: 2,
-        // mainAxisSpacing: 4,
-        // crossAxisSpacing: 4,
-        itemBuilder: (context, index) => const WhishlistWidget(),
-        itemCount: 9,
-      ),
-    );
+    bool _isEmpty = true;
+    return _isEmpty
+        ? const EmptyScreen(
+            buttonText: 'Shop Now',
+            imgPath: 'assets/images/box.png',
+            subTitle: 'Explore more and shortlist some items',
+            title: 'Your Whishlist is Empty',
+          )
+        : Scaffold(
+            appBar: AppBar(
+                leading: const BackWidget(),
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                elevation: 0,
+                centerTitle: true,
+                title: TextWidget(
+                  text: 'Whishlist (2)',
+                  color: color,
+                  textSize: 22,
+                  isTilte: true,
+                ),
+                actions: [
+                  IconButton(
+                      onPressed: () => GlobalMethods.warningDialog(
+                          function: () => log("Delete your Whishlist?!!"),
+                          title: 'Empty your Whishlist?!',
+                          hintText: 'Are you sure?!!',
+                          textButton: 'yes',
+                          context: context),
+                      color: color,
+                      icon: const Icon(IconlyLight.delete))
+                ]),
+            body: MasonryGridView.count(
+              crossAxisCount: 2,
+              // mainAxisSpacing: 4,
+              // crossAxisSpacing: 4,
+              itemBuilder: (context, index) => const WhishlistWidget(),
+              itemCount: 9,
+            ),
+          );
   }
 }

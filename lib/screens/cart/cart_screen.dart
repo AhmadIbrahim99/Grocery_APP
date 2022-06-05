@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/screens/cart/cart_widget.dart';
+import 'package:grocery_app/widgets/empty_screen.dart';
 import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/services/utils.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
@@ -13,43 +14,51 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;
     final Size size = Utils(context).getScreenSize;
-    return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 0,
-          title: TextWidget(
-            text: 'Cart (2)',
-            color: color,
-            textSize: 22,
-            isTilte: true,
-          ),
-          actions: [
-            IconButton(
-                onPressed: () => GlobalMethods.warningDialog(
-                    function: () => log("Delete your cart!!"),
-                    title: 'Empty your cart?!',
-                    hintText: 'Are you sure?!!',
-                    textButton: 'yes',
-                    context: context),
-                color: color,
-                icon: Icon(IconlyLight.delete))
-          ]),
-      body: Column(
-        children: [
-          _checkOut(
-            context: context,
-            size: size,
-            color: color,
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) => const CartWidget(),
+    bool _isEmpty = true;
+    return _isEmpty
+        ? const EmptyScreen(
+            buttonText: 'Shop Now',
+            imgPath: 'assets/images/box.png',
+            subTitle: 'Add some Thing',
+            title: 'Your cart is Empty',
+          )
+        : Scaffold(
+            appBar: AppBar(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                elevation: 0,
+                title: TextWidget(
+                  text: 'Cart (2)',
+                  color: color,
+                  textSize: 22,
+                  isTilte: true,
+                ),
+                actions: [
+                  IconButton(
+                      onPressed: () => GlobalMethods.warningDialog(
+                          function: () => log("Delete your cart!!"),
+                          title: 'Empty your cart?!',
+                          hintText: 'Are you sure?!!',
+                          textButton: 'yes',
+                          context: context),
+                      color: color,
+                      icon: Icon(IconlyLight.delete))
+                ]),
+            body: Column(
+              children: [
+                _checkOut(
+                  context: context,
+                  size: size,
+                  color: color,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: 10,
+                    itemBuilder: (context, index) => const CartWidget(),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 
   Widget _checkOut(
