@@ -5,15 +5,21 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:grocery_app/screens/auth/register.dart';
+import 'package:grocery_app/screens/home_screen.dart';
+import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/services/utils.dart';
 import 'package:grocery_app/widgets/auth_button.dart';
 import 'package:grocery_app/widgets/google_button.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
 
 import '../../consts/constss.dart';
+import '../btm_bar.dart';
+import 'forget_password.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+  static const routeName = "/LoginScreen";
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -48,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   validatorPass(String? value) {
     if (value!.isEmpty || value.length < 7)
-      return 'please enter a valid password Adress';
+      return 'please enter a valid password';
 
     return null;
   }
@@ -183,7 +189,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Align(
                     alignment: Alignment.topRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () => GlobalMethods.navigateTo(
+                          ctx: context, name: ForgetPasswordScreen.routeName),
                       child: const Text(
                         'Forget Password',
                         maxLines: 1,
@@ -199,7 +206,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  AuthButton(fct: () {}, buttonText: 'Login'),
+                  AuthButton(
+                      fct: () => GlobalMethods.navigateTo(
+                            ctx: context,
+                            name: BottomBarScreen.routeName,
+                          ),
+                      buttonText: 'Login'),
                   const SizedBox(
                     height: 10,
                   ),
@@ -261,7 +273,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontWeight: FontWeight.w600,
                             ),
                             recognizer: TapGestureRecognizer()
-                              ..onTap = () => log("Sign Up")),
+                              ..onTap = () => GlobalMethods.navigateTo(
+                                  ctx: context,
+                                  name: RegisterScreen.routeName)),
                       ],
                     ),
                   ),

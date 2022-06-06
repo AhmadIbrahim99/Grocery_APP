@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'cart/cart_screen.dart';
 
 class BottomBarScreen extends StatefulWidget {
+  static const routeName = "/BottomBarScreen";
   const BottomBarScreen({Key? key}) : super(key: key);
 
   @override

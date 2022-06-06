@@ -5,7 +5,9 @@ import 'package:grocery_app/inner_screens/on_sale_screen.dart';
 import 'package:grocery_app/inner_screens/product_details.dart';
 import 'package:grocery_app/provider/dark_theme_provider.dart';
 import 'package:grocery_app/screens/Home_Screen.dart';
+import 'package:grocery_app/screens/auth/forget_password.dart';
 import 'package:grocery_app/screens/auth/login.dart';
+import 'package:grocery_app/screens/auth/register.dart';
 import 'package:grocery_app/screens/btm_bar.dart';
 import 'package:grocery_app/screens/order/orders_screen.dart';
 import 'package:grocery_app/screens/viewed_recently/viewed_recently_screen.dart';
@@ -51,6 +53,7 @@ class _MyAppState extends State<MyApp> {
             theme: Styels.themeData(themeProvider.getDarkTheme, context),
             home: const LoginScreen(),
             routes: {
+              BottomBarScreen.routeName: (context) => const BottomBarScreen(),
               OnSaleScreen.routeName: (context) => const OnSaleScreen(),
               FeedsScreen.routeName: (context) => const FeedsScreen(),
               ProductDetailScreen.routeName: (context) =>
@@ -59,6 +62,10 @@ class _MyAppState extends State<MyApp> {
               OrdersScreen.routeName: (context) => const OrdersScreen(),
               ViewedRecentlyScreen.roteName: (context) =>
                   const ViewedRecentlyScreen(),
+              RegisterScreen.routeName: (context) => const RegisterScreen(),
+              LoginScreen.routeName: (context) => const LoginScreen(),
+              ForgetPasswordScreen.routeName: (context) =>
+                  const ForgetPasswordScreen(),
             },
           );
         },
