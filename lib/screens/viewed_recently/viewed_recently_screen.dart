@@ -26,7 +26,7 @@ class _ViewedRecentlyScreenState extends State<ViewedRecentlyScreen> {
     return _isEmpty
         ? const EmptyScreen(
             buttonText: 'Shop Now',
-            imgPath: 'assets/images/box.png',
+            imgPath: 'assets/images/history.png',
             subTitle: 'No products has been viewd yet!',
             title: 'Your history is Empty',
           )

@@ -26,7 +26,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
     return _isEmpty
         ? const EmptyScreen(
             buttonText: 'Shop Now',
-            imgPath: 'assets/images/box.png',
+            imgPath: 'assets/images/add-to-cart.png',
             subTitle: 'Order some thing',
             title: 'You Didnt place any order yet!',
           )

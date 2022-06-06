@@ -11,6 +11,8 @@ import 'package:grocery_app/widgets/on_sale_widget.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../consts/constss.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -19,12 +21,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<String> __offerImages = [
-    "assets/images/offers/Offer1.jpg",
-    "assets/images/offers/Offer2.jpg",
-    "assets/images/offers/Offer3.jpg",
-    "assets/images/offers/Offer4.jpg",
-  ];
   @override
   Widget build(BuildContext context) {
     final Utils utils = Utils(context);
@@ -36,21 +32,22 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             SizedBox(
-                height: size.height * 0.33,
-                child: Swiper(
-                  itemBuilder: (context, index) => Image.asset(
-                    __offerImages[index],
-                    fit: BoxFit.fill,
-                  ),
-                  autoplay: true,
-                  itemCount: __offerImages.length,
-                  pagination: const SwiperPagination(
-                    alignment: Alignment.bottomCenter,
-                    builder: DotSwiperPaginationBuilder(
-                        color: Colors.white, activeColor: Colors.red),
-                  ),
-                  // control: const SwiperControl(color: Colors.black),
-                )),
+              height: size.height * 0.33,
+              child: Swiper(
+                itemBuilder: (context, index) => Image.asset(
+                  Constss.offerImages[index],
+                  fit: BoxFit.fill,
+                ),
+                autoplay: true,
+                itemCount: Constss.offerImages.length,
+                pagination: const SwiperPagination(
+                  alignment: Alignment.bottomCenter,
+                  builder: DotSwiperPaginationBuilder(
+                      color: Colors.white, activeColor: Colors.red),
+                ),
+                // control: const SwiperControl(color: Colors.black),
+              ),
+            ),
             const SizedBox(
               height: 7,
             ),

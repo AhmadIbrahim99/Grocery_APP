@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/provider/dark_theme_provider.dart';
@@ -60,9 +61,24 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                   : const Icon(IconlyLight.category),
               label: "Category"),
           BottomNavigationBarItem(
-              icon: _selectedIndex == 2
-                  ? const Icon(IconlyBold.buy)
-                  : const Icon(IconlyLight.buy),
+              icon: Badge(
+                toAnimate: true,
+                shape: BadgeShape.circle,
+                badgeColor: Colors.blue,
+                borderRadius: BorderRadius.circular(8),
+                // position: BadgePosition.topEnd(top: -7, end: -7),
+                badgeContent: const FittedBox(
+                  child: Text(
+                    '1',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                child: Icon(
+                  _selectedIndex == 2 ? IconlyBold.buy : IconlyLight.buy,
+                ),
+              ),
               label: "Cart"),
           BottomNavigationBarItem(
               icon: _selectedIndex == 3

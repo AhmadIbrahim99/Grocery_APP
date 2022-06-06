@@ -23,7 +23,7 @@ class WhishListScreen extends StatelessWidget {
     return _isEmpty
         ? const EmptyScreen(
             buttonText: 'Shop Now',
-            imgPath: 'assets/images/box.png',
+            imgPath: 'assets/images/wishlist.png',
             subTitle: 'Explore more and shortlist some items',
             title: 'Your Whishlist is Empty',
           )

@@ -5,6 +5,7 @@ import 'package:grocery_app/inner_screens/on_sale_screen.dart';
 import 'package:grocery_app/inner_screens/product_details.dart';
 import 'package:grocery_app/provider/dark_theme_provider.dart';
 import 'package:grocery_app/screens/Home_Screen.dart';
+import 'package:grocery_app/screens/auth/login.dart';
 import 'package:grocery_app/screens/btm_bar.dart';
 import 'package:grocery_app/screens/order/orders_screen.dart';
 import 'package:grocery_app/screens/viewed_recently/viewed_recently_screen.dart';
@@ -48,7 +49,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             title: 'Grocery',
             theme: Styels.themeData(themeProvider.getDarkTheme, context),
-            home: const BottomBarScreen(),
+            home: const LoginScreen(),
             routes: {
               OnSaleScreen.routeName: (context) => const OnSaleScreen(),
               FeedsScreen.routeName: (context) => const FeedsScreen(),
