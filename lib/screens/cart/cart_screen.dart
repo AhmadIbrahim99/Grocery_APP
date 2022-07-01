@@ -1,11 +1,13 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/screens/cart/cart_widget.dart';
 import 'package:grocery_app/widgets/empty_screen.dart';
 import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/services/utils.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
+import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -14,8 +16,9 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;
     final Size size = Utils(context).getScreenSize;
-    bool _isEmpty = true;
-    return _isEmpty
+    final cartProvider = Provider.of<CartProvider>(context);
+    final cartItemsList = cartProvider.getCartItems.values.toList();
+    return cartItemsList.isEmpty
         ? const EmptyScreen(
             buttonText: 'Shop Now',
             imgPath: 'assets/images/cart.png',
@@ -27,7 +30,7 @@ class CartScreen extends StatelessWidget {
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 elevation: 0,
                 title: TextWidget(
-                  text: 'Cart (2)',
+                  text: 'Cart (${cartItemsList.length})',
                   color: color,
                   textSize: 22,
                   isTilte: true,
@@ -52,8 +55,11 @@ class CartScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (context, index) => const CartWidget(),
+                    itemCount: cartItemsList.length,
+                    itemBuilder: (context, index) =>
+                        ChangeNotifierProvider.value(
+                            value: cartItemsList[index],
+                            child: const CartWidget()),
                   ),
                 ),
               ],
