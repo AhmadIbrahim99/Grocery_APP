@@ -3,10 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/models/products.dart';
+import 'package:grocery_app/providers/products_provider.dart';
 import 'package:grocery_app/services/utils.dart';
 import 'package:grocery_app/widgets/back_widget.dart';
 import 'package:grocery_app/widgets/heart_btn.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   static const routeName = "/ProductDetailScreen";
@@ -29,6 +32,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget build(BuildContext context) {
     final Size size = Utils(context).getScreenSize;
     final Color color = Utils(context).getColor;
+    final prdoctsProvider = Provider.of<ProductsProvider>(context);
+    final productId = ModalRoute.of(context)!.settings.arguments as String;
+    ProductModel productModel = prdoctsProvider.getProductById(id: productId);
+    double userPrice =
+        productModel.isOnSale ? productModel.salePrice : productModel.price;
+    double totalPrice = userPrice * int.parse(_qTEC.text);
     return Scaffold(
       appBar: AppBar(
         leading: const BackWidget(),
@@ -40,7 +49,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           Flexible(
             flex: 2,
             child: FancyShimmerImage(
-              imageUrl: 'https://i.ibb.co/F0s3FHQ/Apricots.png',
+              imageUrl: productModel.imageUrl,
               // height: size.width * 0.21,
               width: size.width,
               boxFit: BoxFit.scaleDown,
@@ -67,7 +76,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       children: [
                         Flexible(
                           child: TextWidget(
-                            text: 'title',
+                            text: productModel.title,
                             color: color,
                             textSize: 25,
                             isTilte: true,
@@ -83,24 +92,27 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     child: Row(
                       children: [
                         TextWidget(
-                          text: '\$2.59',
+                          text: '\$${userPrice.toStringAsFixed(2)}/',
                           color: Colors.green,
                           textSize: 22,
                           isTilte: true,
                         ),
+                        const SizedBox(
+                          width: 3,
+                        ),
                         TextWidget(
-                          text: '/Kg',
+                          text: productModel.isPiece ? 'Piece' : '/Kg',
                           color: color,
-                          textSize: 12,
+                          textSize: 16,
                           isTilte: false,
                         ),
                         const SizedBox(
                           width: 10,
                         ),
                         Visibility(
-                          visible: true,
+                          visible: productModel.isOnSale,
                           child: Text(
-                            '\$3.9',
+                            '\$${productModel.price.toStringAsFixed(2)}',
                             style: TextStyle(
                               fontSize: 15,
                               color: color,
@@ -222,13 +234,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 child: Row(
                                   children: [
                                     TextWidget(
-                                      text: '\$2.59/',
+                                      text:
+                                          '\$${totalPrice.toStringAsFixed(2)}/',
                                       color: color,
                                       textSize: 20,
                                       isTilte: true,
                                     ),
                                     TextWidget(
-                                      text: '${_qTEC.text}Kg',
+                                      text:
+                                          '${_qTEC.text}${productModel.isPiece ? 'Piece' : 'Kg'}',
                                       color: color,
                                       textSize: 16,
                                       isTilte: false,

@@ -4,6 +4,8 @@ import 'package:grocery_app/inner_screens/feeds_screen.dart';
 import 'package:grocery_app/inner_screens/on_sale_screen.dart';
 import 'package:grocery_app/inner_screens/product_details.dart';
 import 'package:grocery_app/provider/dark_theme_provider.dart';
+import 'package:grocery_app/providers/cart_provider.dart';
+import 'package:grocery_app/providers/products_provider.dart';
 import 'package:grocery_app/screens/Home_Screen.dart';
 import 'package:grocery_app/screens/auth/forget_password.dart';
 import 'package:grocery_app/screens/auth/login.dart';
@@ -13,6 +15,8 @@ import 'package:grocery_app/screens/order/orders_screen.dart';
 import 'package:grocery_app/screens/viewed_recently/viewed_recently_screen.dart';
 import 'package:grocery_app/screens/whishlist/whishlist_screen.dart';
 import 'package:provider/provider.dart';
+
+import 'inner_screens/cat_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -44,14 +48,24 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => themeChangeProvicer)],
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => themeChangeProvicer,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ProductsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CartProvider(),
+        ),
+      ],
       child: Consumer<DarkThemeProvider>(
         builder: (context, themeProvider, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Grocery',
             theme: Styels.themeData(themeProvider.getDarkTheme, context),
-            home: const LoginScreen(),
+            home: const BottomBarScreen(),
             routes: {
               BottomBarScreen.routeName: (context) => const BottomBarScreen(),
               OnSaleScreen.routeName: (context) => const OnSaleScreen(),
@@ -66,6 +80,7 @@ class _MyAppState extends State<MyApp> {
               LoginScreen.routeName: (context) => const LoginScreen(),
               ForgetPasswordScreen.routeName: (context) =>
                   const ForgetPasswordScreen(),
+              CategoryScreen.routeName: (context) => const CategoryScreen(),
             },
           );
         },

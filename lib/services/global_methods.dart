@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../widgets/text_widget.dart';
 
 class GlobalMethods {
-  static navigateTo({required ctx, required name}) {
-    Navigator.pushNamed(ctx, name);
+  static navigateTo({required ctx, required name, arguments}) {
+    Navigator.pushNamed(ctx, name, arguments: arguments);
   }
 
   static Future<void> warningDialog(

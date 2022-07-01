@@ -12,6 +12,8 @@ import 'package:grocery_app/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../consts/constss.dart';
+import '../models/products.dart';
+import '../providers/products_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -27,6 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
     Size size = utils.getScreenSize;
     final Color color = utils.getColor;
     final themState = utils.getThem;
+    final productsProvider = Provider.of<ProductsProvider>(context);
+    List<ProductModel> products = productsProvider.getProducts;
+    List<ProductModel> productsOnSale = productsProvider.getOnSaleProducts;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -94,8 +99,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: SizedBox(
                     height: size.height * 0.23,
                     child: ListView.builder(
-                      itemBuilder: (context, index) => const OnSaleWidget(),
-                      itemCount: 10,
+                      itemBuilder: (context, index) =>
+                          ChangeNotifierProvider.value(
+                              value: productsOnSale[index],
+                              child: const OnSaleWidget()),
+                      itemCount: productsOnSale.length < 10
+                          ? productsOnSale.length
+                          : 10,
                       scrollDirection: Axis.horizontal,
                     ),
                   ),
@@ -134,7 +144,13 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisCount: 2,
               padding: EdgeInsets.zero,
               childAspectRatio: size.width / (size.height * 0.6),
-              children: List.generate(10, (index) => const FeedsWidget()),
+              children: List.generate(
+                products.length < 4 ? products.length : 4,
+                (index) => ChangeNotifierProvider.value(
+                  value: products[index],
+                  child: const FeedsWidget(),
+                ),
+              ),
             ),
           ],
         ),

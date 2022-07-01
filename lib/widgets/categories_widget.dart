@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:grocery_app/inner_screens/cat_screen.dart';
 import 'package:grocery_app/provider/dark_theme_provider.dart';
+import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +23,11 @@ class CategoriesWidget extends StatelessWidget {
     final Color color = themeData.getDarkTheme ? Colors.white : Colors.black;
     Size _screenSize = MediaQuery.of(context).size;
     return InkWell(
-      onTap: () {},
+      onTap: () => GlobalMethods.navigateTo(
+        ctx: context,
+        name: CategoryScreen.routeName,
+        arguments: name,
+      ),
       child: Container(
         decoration: BoxDecoration(
           color: catColor.withOpacity(0.1),

@@ -1,3 +1,5 @@
+import '../models/products.dart';
+
 class Constss {
   static const List<String> offerImages = [
     "assets/images/offers/Offer1.jpg",

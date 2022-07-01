@@ -18,8 +18,8 @@ class CategoriesScreen extends StatelessWidget {
     {"imgPath": "assets/images/cat/fruits.png", "name": " fruits"},
     {"imgPath": "assets/images/cat/grains.png", "name": " grains"},
     {"imgPath": "assets/images/cat/nuts.png", "name": " Nuts"},
-    {"imgPath": "assets/images/cat/spices.png", "name": " Herps"},
-    {"imgPath": "assets/images/cat/Spinach.png", "name": " Spinach"}
+    {"imgPath": "assets/images/cat/spices.png", "name": " Spices"},
+    {"imgPath": "assets/images/cat/Spinach.png", "name": " Herbs"}
   ];
   @override
   Widget build(BuildContext context) {

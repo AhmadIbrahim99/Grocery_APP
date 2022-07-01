@@ -5,11 +5,16 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/inner_screens/product_details.dart';
+import 'package:grocery_app/models/products.dart';
+import 'package:grocery_app/providers/products_provider.dart';
 import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/services/utils.dart';
 import 'package:grocery_app/widgets/heart_btn.dart';
 import 'package:grocery_app/widgets/price_widget.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/cart_provider.dart';
 
 class OnSaleWidget extends StatefulWidget {
   const OnSaleWidget({Key? key}) : super(key: key);
@@ -25,6 +30,8 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
     final theme = utils.getThem;
     final Color color = utils.getColor;
     Size size = utils.getScreenSize;
+    final productsOnSale = Provider.of<ProductModel>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
@@ -33,9 +40,9 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
           onTap: () => GlobalMethods.navigateTo(
-            ctx: context,
-            name: ProductDetailScreen.routeName,
-          ),
+              ctx: context,
+              name: ProductDetailScreen.routeName,
+              arguments: productsOnSale.id),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -46,7 +53,7 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     FancyShimmerImage(
-                      imageUrl: 'https://i.ibb.co/F0s3FHQ/Apricots.png',
+                      imageUrl: productsOnSale.imageUrl,
                       height: size.width * 0.21,
                       width: size.width * 0.21,
                       boxFit: BoxFit.fill,
@@ -63,7 +70,7 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                     Column(
                       children: [
                         TextWidget(
-                          text: "1KG",
+                          text: productsOnSale.isPiece ? '1Piece' : "1KG",
                           color: color,
                           textSize: 21,
                           isTilte: true,
@@ -74,7 +81,10 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                         Row(
                           children: [
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () => cartProvider.addProduct(
+                                productId: productsOnSale.id,
+                                quantity: 1,
+                              ),
                               child: Icon(
                                 IconlyLight.bag2,
                                 size: 21,
@@ -91,19 +101,23 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                     ),
                   ],
                 ),
-                const PriceWidget(
-                    salesPrice: 2.99,
-                    price: 5.9,
+                PriceWidget(
+                    salesPrice: productsOnSale.salePrice,
+                    price: productsOnSale.price,
                     textPrice: "1",
-                    isOnSale: true),
+                    isOnSale: productsOnSale.isOnSale),
                 const SizedBox(
                   height: 5,
                 ),
-                TextWidget(
-                  text: "Product Title",
-                  color: color,
-                  textSize: 16,
-                  isTilte: true,
+                Flexible(
+                  flex: 6,
+                  child: TextWidget(
+                    text: productsOnSale.title,
+                    color: color,
+                    textSize: 16,
+                    maxLines: 1,
+                    isTilte: true,
+                  ),
                 ),
                 const SizedBox(
                   height: 5,

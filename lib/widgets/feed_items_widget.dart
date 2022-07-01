@@ -5,15 +5,17 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/inner_screens/product_details.dart';
+import 'package:grocery_app/models/products.dart';
+import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/services/utils.dart';
 import 'package:grocery_app/widgets/heart_btn.dart';
 import 'package:grocery_app/widgets/price_widget.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
+import 'package:provider/provider.dart';
 
 class FeedsWidget extends StatefulWidget {
   const FeedsWidget({Key? key}) : super(key: key);
-
   @override
   State<FeedsWidget> createState() => _FeedsWidgetState();
 }
@@ -38,6 +40,8 @@ class _FeedsWidgetState extends State<FeedsWidget> {
     final Utils utils = Utils(context);
     Size size = utils.getScreenSize;
     Color color = utils.getColor;
+    final productModel = Provider.of<ProductModel>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
@@ -45,14 +49,14 @@ class _FeedsWidgetState extends State<FeedsWidget> {
         color: Theme.of(context).cardColor,
         child: InkWell(
           onTap: () => GlobalMethods.navigateTo(
-            ctx: context,
-            name: ProductDetailScreen.routeName,
-          ),
+              ctx: context,
+              name: ProductDetailScreen.routeName,
+              arguments: productModel.id),
           borderRadius: BorderRadius.circular(12),
           child: Column(
             children: [
               FancyShimmerImage(
-                imageUrl: 'https://i.ibb.co/F0s3FHQ/Apricots.png',
+                imageUrl: productModel.imageUrl,
                 height: size.width * 0.21,
                 width: size.width * 0.21,
                 boxFit: BoxFit.fill,
@@ -62,13 +66,17 @@ class _FeedsWidgetState extends State<FeedsWidget> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextWidget(
-                      text: "Title",
-                      color: color,
-                      textSize: 19,
-                      isTilte: true,
+                    Flexible(
+                      flex: 3,
+                      child: TextWidget(
+                        text: productModel.title,
+                        color: color,
+                        maxLines: 1,
+                        textSize: 18,
+                        isTilte: true,
+                      ),
                     ),
-                    const HeartButton(),
+                    const Flexible(flex: 1, child: HeartButton()),
                   ],
                 ),
               ),
@@ -78,26 +86,23 @@ class _FeedsWidgetState extends State<FeedsWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Flexible(
-                      flex: 4,
+                      flex: 3,
                       child: PriceWidget(
-                          salesPrice: 2.99,
-                          price: 5.9,
+                          salesPrice: productModel.salePrice,
+                          price: productModel.price,
                           textPrice: _quantityTextController.text,
-                          isOnSale: true),
-                    ),
-                    const SizedBox(
-                      width: 7,
+                          isOnSale: productModel.isOnSale),
                     ),
                     Flexible(
                       child: Row(
                         children: [
                           Flexible(
-                            flex: 3,
+                            flex: 6,
                             child: FittedBox(
                               child: TextWidget(
-                                text: 'KG',
+                                text: productModel.isPiece ? 'Piece' : 'kg',
                                 color: color,
-                                textSize: 17,
+                                textSize: 20,
                                 isTilte: true,
                               ),
                             ),
@@ -134,7 +139,12 @@ class _FeedsWidgetState extends State<FeedsWidget> {
               SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () => cartProvider.addProduct(
+                    productId: productModel.id,
+                    quantity: int.parse(
+                      _quantityTextController.text,
+                    ),
+                  ),
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Theme.of(context).cardColor),
