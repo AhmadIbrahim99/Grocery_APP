@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/cart.dart';
 import '../../providers/cart_provider.dart';
+import '../../providers/wishlist_provider.dart';
 
 class CartWidget extends StatefulWidget {
   const CartWidget({Key? key, required this.q}) : super(key: key);
@@ -51,6 +52,9 @@ class _CartWidgetState extends State<CartWidget> {
     double userPrice = getCurrentProduct.isOnSale
         ? getCurrentProduct.salePrice
         : getCurrentProduct.price;
+    final _wishListProvider = Provider.of<WishListProvider>(context);
+    bool _isInWishList =
+        _wishListProvider.getWishListItems.containsKey(getCurrentProduct.id);
     return GestureDetector(
       onTap: () => GlobalMethods.navigateTo(
           ctx: context,
@@ -176,7 +180,10 @@ class _CartWidgetState extends State<CartWidget> {
                           const SizedBox(
                             height: 5,
                           ),
-                          const HeartButton(),
+                          HeartButton(
+                            productId: getCurrentProduct.id,
+                            isInWishlist: _isInWishList,
+                          ),
                           TextWidget(
                             text: '\$${userPrice.toStringAsFixed(2)}',
                             color: color,

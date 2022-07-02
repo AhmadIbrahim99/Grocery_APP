@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:grocery_app/providers/wishlist_provider.dart';
 import 'package:grocery_app/screens/whishlist/whishlist_widget.dart';
 import 'package:grocery_app/services/utils.dart';
 import 'package:grocery_app/widgets/back_widget.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/global_methods.dart';
 import '../../widgets/empty_screen.dart';
@@ -19,10 +21,12 @@ class WhishListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;
     final Size size = Utils(context).getScreenSize;
-    bool _isEmpty = true;
-    return _isEmpty
+    final whishListProvider = Provider.of<WishListProvider>(context);
+    final items =
+        whishListProvider.getWishListItems.values.toList().reversed.toList();
+    return items.isEmpty
         ? const EmptyScreen(
-            buttonText: 'Shop Now',
+            buttonText: 'Add a wish',
             imgPath: 'assets/images/wishlist.png',
             subTitle: 'Explore more and shortlist some items',
             title: 'Your Whishlist is Empty',
@@ -34,7 +38,7 @@ class WhishListScreen extends StatelessWidget {
                 elevation: 0,
                 centerTitle: true,
                 title: TextWidget(
-                  text: 'Whishlist (2)',
+                  text: 'Whishlist (${items.length})',
                   color: color,
                   textSize: 22,
                   isTilte: true,
@@ -42,7 +46,7 @@ class WhishListScreen extends StatelessWidget {
                 actions: [
                   IconButton(
                       onPressed: () => GlobalMethods.warningDialog(
-                          function: () => log("Delete your Whishlist?!!"),
+                          function: () => whishListProvider.clearWishList(),
                           title: 'Empty your Whishlist?!',
                           hintText: 'Are you sure?!!',
                           textButton: 'yes',
@@ -51,11 +55,12 @@ class WhishListScreen extends StatelessWidget {
                       icon: const Icon(IconlyLight.delete))
                 ]),
             body: MasonryGridView.count(
+              itemCount: items.length,
               crossAxisCount: 2,
               // mainAxisSpacing: 4,
               // crossAxisSpacing: 4,
-              itemBuilder: (context, index) => const WhishlistWidget(),
-              itemCount: 9,
+              itemBuilder: (context, index) => ChangeNotifierProvider.value(
+                  value: items[index], child: const WhishlistWidget()),
             ),
           );
   }

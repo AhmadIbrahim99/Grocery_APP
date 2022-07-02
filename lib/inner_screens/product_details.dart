@@ -12,6 +12,8 @@ import 'package:grocery_app/widgets/heart_btn.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/wishlist_provider.dart';
+
 class ProductDetailScreen extends StatefulWidget {
   static const routeName = "/ProductDetailScreen";
   const ProductDetailScreen({Key? key}) : super(key: key);
@@ -37,14 +39,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final cartProvider = Provider.of<CartProvider>(context);
     final productId = ModalRoute.of(context)!.settings.arguments as String;
     ProductModel productModel = prdoctsProvider.getProductById(id: productId);
-    bool _isInCart = cartProvider.getCartItems.containsKey(productModel.id);
+    bool? _isInCart = cartProvider.getCartItems.containsKey(productModel.id);
     double userPrice =
         productModel.isOnSale ? productModel.salePrice : productModel.price;
-    _qTEC.text = cartProvider.getCartItems.values
-        .firstWhere((element) => element.productsId == productId)
-        .quantity
-        .toString();
-    double totalPrice = userPrice * int.parse(_qTEC.text);
+    _qTEC.text = _isInCart
+        ? cartProvider.getCartItems.values
+            .firstWhere((element) => element.productsId == productModel.id)
+            .quantity
+            .toString()
+        : "1";
+    double? totalPrice = userPrice * int.parse(_qTEC.text);
+    final _wishListProvider = Provider.of<WishListProvider>(context);
+    bool? _isInWishList =
+        _wishListProvider.getWishListItems.containsKey(productModel.id);
 
     return Scaffold(
       appBar: AppBar(
@@ -90,7 +97,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             isTilte: true,
                           ),
                         ),
-                        const HeartButton(),
+                        HeartButton(
+                          productId: productModel.id,
+                          isInWishlist: _isInWishList,
+                        ),
                       ],
                     ),
                   ),

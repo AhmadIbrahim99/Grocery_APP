@@ -15,6 +15,7 @@ import 'package:grocery_app/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/cart_provider.dart';
+import '../providers/wishlist_provider.dart';
 
 class OnSaleWidget extends StatefulWidget {
   const OnSaleWidget({Key? key}) : super(key: key);
@@ -33,6 +34,9 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
     final productsOnSale = Provider.of<ProductModel>(context);
     final cartProvider = Provider.of<CartProvider>(context);
     bool _isInCart = cartProvider.getCartItems.containsKey(productsOnSale.id);
+    final _wishListProvider = Provider.of<WishListProvider>(context);
+    bool _isInWishList =
+        _wishListProvider.getWishListItems.containsKey(productsOnSale.id);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
@@ -95,7 +99,10 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                             const SizedBox(
                               width: 5,
                             ),
-                            const HeartButton(),
+                            HeartButton(
+                              productId: productsOnSale.id,
+                              isInWishlist: _isInWishList,
+                            ),
                           ],
                         ),
                       ],

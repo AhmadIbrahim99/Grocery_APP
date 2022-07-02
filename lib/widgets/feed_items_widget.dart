@@ -14,6 +14,8 @@ import 'package:grocery_app/widgets/price_widget.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/wishlist_provider.dart';
+
 class FeedsWidget extends StatefulWidget {
   const FeedsWidget({Key? key}) : super(key: key);
   @override
@@ -42,7 +44,11 @@ class _FeedsWidgetState extends State<FeedsWidget> {
     Color color = utils.getColor;
     final productModel = Provider.of<ProductModel>(context);
     final cartProvider = Provider.of<CartProvider>(context);
-    bool _isInCart = cartProvider.getCartItems.containsKey(productModel.id);
+    bool? _isInCart = cartProvider.getCartItems.containsKey(productModel.id);
+    final _wishListProvider = Provider.of<WishListProvider>(context);
+    bool _isInWishList =
+        _wishListProvider.getWishListItems.containsKey(productModel.id);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
@@ -77,7 +83,12 @@ class _FeedsWidgetState extends State<FeedsWidget> {
                         isTilte: true,
                       ),
                     ),
-                    const Flexible(flex: 1, child: HeartButton()),
+                    Flexible(
+                        flex: 1,
+                        child: HeartButton(
+                          productId: productModel.id,
+                          isInWishlist: _isInWishList,
+                        )),
                   ],
                 ),
               ),
