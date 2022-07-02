@@ -46,7 +46,11 @@ class GlobalMethods {
                 ),
               ),
               TextButton(
-                onPressed: () => function(),
+                onPressed: () {
+                  if (!Navigator.canPop(context)) return;
+                  function();
+                  Navigator.pop(context);
+                },
                 child: TextWidget(
                   color: Colors.red,
                   text: textButton,

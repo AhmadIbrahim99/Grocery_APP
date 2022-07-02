@@ -17,7 +17,9 @@ class CartScreen extends StatelessWidget {
     final Color color = Utils(context).getColor;
     final Size size = Utils(context).getScreenSize;
     final cartProvider = Provider.of<CartProvider>(context);
-    final cartItemsList = cartProvider.getCartItems.values.toList();
+    final cartItemsList =
+        cartProvider.getCartItems.values.toList().reversed.toList();
+
     return cartItemsList.isEmpty
         ? const EmptyScreen(
             buttonText: 'Shop Now',
@@ -38,13 +40,13 @@ class CartScreen extends StatelessWidget {
                 actions: [
                   IconButton(
                       onPressed: () => GlobalMethods.warningDialog(
-                          function: () => log("Delete your cart!!"),
+                          function: () => cartProvider.clearCart(),
                           title: 'Empty your cart?!',
                           hintText: 'Are you sure?!!',
                           textButton: 'yes',
                           context: context),
                       color: color,
-                      icon: Icon(IconlyLight.delete))
+                      icon: const Icon(IconlyLight.delete))
                 ]),
             body: Column(
               children: [
@@ -59,7 +61,8 @@ class CartScreen extends StatelessWidget {
                     itemBuilder: (context, index) =>
                         ChangeNotifierProvider.value(
                             value: cartItemsList[index],
-                            child: const CartWidget()),
+                            child:
+                                CartWidget(q: cartItemsList[index].quantity)),
                   ),
                 ),
               ],

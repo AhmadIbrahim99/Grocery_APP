@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/models/products.dart';
+import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/providers/products_provider.dart';
 import 'package:grocery_app/services/utils.dart';
 import 'package:grocery_app/widgets/back_widget.dart';
@@ -33,11 +34,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final Size size = Utils(context).getScreenSize;
     final Color color = Utils(context).getColor;
     final prdoctsProvider = Provider.of<ProductsProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
     final productId = ModalRoute.of(context)!.settings.arguments as String;
     ProductModel productModel = prdoctsProvider.getProductById(id: productId);
+    bool _isInCart = cartProvider.getCartItems.containsKey(productModel.id);
     double userPrice =
         productModel.isOnSale ? productModel.salePrice : productModel.price;
+    _qTEC.text = cartProvider.getCartItems.values
+        .firstWhere((element) => element.productsId == productId)
+        .quantity
+        .toString();
     double totalPrice = userPrice * int.parse(_qTEC.text);
+
     return Scaffold(
       appBar: AppBar(
         leading: const BackWidget(),
@@ -264,14 +272,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             onTap: () {},
                             borderRadius: BorderRadius.circular(10),
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () => _isInCart
+                                  ? null
+                                  : cartProvider.addProduct(
+                                      productId: productModel.id,
+                                      quantity: int.parse(_qTEC.text)),
                               borderRadius: BorderRadius.circular(10),
                               child: Padding(
                                 padding: const EdgeInsets.all(
                                   12.0,
                                 ),
                                 child: TextWidget(
-                                    text: 'Add to cart',
+                                    text: _isInCart ? 'In cart' : 'Add to cart',
                                     color: Colors.white,
                                     textSize: 18),
                               ),

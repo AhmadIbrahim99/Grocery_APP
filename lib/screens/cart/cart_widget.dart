@@ -14,16 +14,24 @@ import 'package:grocery_app/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/cart.dart';
+import '../../providers/cart_provider.dart';
 
 class CartWidget extends StatefulWidget {
-  const CartWidget({Key? key}) : super(key: key);
+  const CartWidget({Key? key, required this.q}) : super(key: key);
+  final int q;
 
   @override
   State<CartWidget> createState() => _CartWidgetState();
 }
 
 class _CartWidgetState extends State<CartWidget> {
-  final _quantityTextController = TextEditingController(text: '1');
+  final _quantityTextController = TextEditingController();
+  @override
+  void initState() {
+    _quantityTextController.text = widget.q.toString();
+    super.initState();
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -36,6 +44,7 @@ class _CartWidgetState extends State<CartWidget> {
     final Size size = Utils(context).getScreenSize;
     final Color color = Utils(context).getColor;
     final productsProvider = Provider.of<ProductsProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
     final carttModel = Provider.of<CartModel>(context);
     ProductModel getCurrentProduct =
         productsProvider.getProductById(id: carttModel.productsId);
@@ -44,9 +53,9 @@ class _CartWidgetState extends State<CartWidget> {
         : getCurrentProduct.price;
     return GestureDetector(
       onTap: () => GlobalMethods.navigateTo(
-        ctx: context,
-        name: ProductDetailScreen.routeName,
-      ),
+          ctx: context,
+          name: ProductDetailScreen.routeName,
+          arguments: carttModel.productsId),
       child: Row(
         children: [
           Expanded(
@@ -100,7 +109,8 @@ class _CartWidgetState extends State<CartWidget> {
                                   fct: () {
                                     if (_quantityTextController.text == "1")
                                       return;
-
+                                    cartProvider.reduceQuantityByOne(
+                                        carttModel.productsId);
                                     setState(() {
                                       _quantityTextController.text = (int.parse(
                                                   _quantityTextController
@@ -132,6 +142,8 @@ class _CartWidgetState extends State<CartWidget> {
                               ),
                               _quantityController(
                                   fct: () {
+                                    cartProvider.addQuantityByOne(
+                                        carttModel.productsId);
                                     setState(() {
                                       _quantityTextController.text = (int.parse(
                                                   _quantityTextController
@@ -153,7 +165,8 @@ class _CartWidgetState extends State<CartWidget> {
                       child: Column(
                         children: [
                           InkWell(
-                            onTap: () {},
+                            onTap: () => cartProvider
+                                .removeOneItem(carttModel.productsId),
                             child: const Icon(
                               CupertinoIcons.cart_badge_minus,
                               color: Colors.red,
