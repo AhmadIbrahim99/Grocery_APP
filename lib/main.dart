@@ -22,11 +22,11 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'inner_screens/cat_screen.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
   runApp(MyApp());
 }
 
@@ -52,53 +52,78 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  final _firebaseInitialization =
+      Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => themeChangeProvicer,
-        ),
-        ChangeNotifierProvider(
-          create: (_) => ProductsProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => CartProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => WishListProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => ViewedProductProvider(),
-        ),
-      ],
-      child: Consumer<DarkThemeProvider>(
-        builder: (context, themeProvider, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Grocery',
-            theme: Styels.themeData(themeProvider.getDarkTheme, context),
-            home: const BottomBarScreen(),
-            routes: {
-              BottomBarScreen.routeName: (context) => const BottomBarScreen(),
-              OnSaleScreen.routeName: (context) => const OnSaleScreen(),
-              FeedsScreen.routeName: (context) => const FeedsScreen(),
-              ProductDetailScreen.routeName: (context) =>
-                  const ProductDetailScreen(),
-              WhishListScreen.routeName: (context) => const WhishListScreen(),
-              OrdersScreen.routeName: (context) => const OrdersScreen(),
-              ViewedRecentlyScreen.roteName: (context) =>
-                  const ViewedRecentlyScreen(),
-              RegisterScreen.routeName: (context) => const RegisterScreen(),
-              LoginScreen.routeName: (context) => const LoginScreen(),
-              ForgetPasswordScreen.routeName: (context) =>
-                  const ForgetPasswordScreen(),
-              CategoryScreen.routeName: (context) => const CategoryScreen(),
-            },
+    return FutureBuilder(
+        future: _firebaseInitialization,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const MaterialApp(
+              home: Scaffold(
+                  body: Center(
+                child: CircularProgressIndicator(),
+              )),
+            );
+          } else if (snapshot.hasError) {
+            return const MaterialApp(
+              home: Scaffold(
+                  body: Center(
+                child: Text("An error occurd"),
+              )),
+            );
+          }
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                create: (_) => themeChangeProvicer,
+              ),
+              ChangeNotifierProvider(
+                create: (_) => ProductsProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => CartProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => WishListProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => ViewedProductProvider(),
+              ),
+            ],
+            child: Consumer<DarkThemeProvider>(
+              builder: (context, themeProvider, child) {
+                return MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  title: 'Grocery',
+                  theme: Styels.themeData(themeProvider.getDarkTheme, context),
+                  home: const BottomBarScreen(),
+                  routes: {
+                    BottomBarScreen.routeName: (context) =>
+                        const BottomBarScreen(),
+                    OnSaleScreen.routeName: (context) => const OnSaleScreen(),
+                    FeedsScreen.routeName: (context) => const FeedsScreen(),
+                    ProductDetailScreen.routeName: (context) =>
+                        const ProductDetailScreen(),
+                    WhishListScreen.routeName: (context) =>
+                        const WhishListScreen(),
+                    OrdersScreen.routeName: (context) => const OrdersScreen(),
+                    ViewedRecentlyScreen.roteName: (context) =>
+                        const ViewedRecentlyScreen(),
+                    RegisterScreen.routeName: (context) =>
+                        const RegisterScreen(),
+                    LoginScreen.routeName: (context) => const LoginScreen(),
+                    ForgetPasswordScreen.routeName: (context) =>
+                        const ForgetPasswordScreen(),
+                    CategoryScreen.routeName: (context) =>
+                        const CategoryScreen(),
+                  },
+                );
+              },
+            ),
           );
-        },
-      ),
-    );
+        });
   }
 }
