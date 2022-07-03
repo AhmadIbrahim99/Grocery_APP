@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/consts/theme_data.dart';
 import 'package:grocery_app/inner_screens/feeds_screen.dart';
@@ -18,9 +19,14 @@ import 'package:grocery_app/screens/viewed_recently/viewed_recently_screen.dart'
 import 'package:grocery_app/screens/whishlist/whishlist_screen.dart';
 import 'package:provider/provider.dart';
 
+import 'firebase_options.dart';
 import 'inner_screens/cat_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 

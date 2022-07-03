@@ -37,8 +37,6 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
   Widget build(BuildContext context) {
     final themeState = Provider.of<DarkThemeProvider>(context);
     bool _isDark = themeState.getDarkTheme;
-    final cartProvider = Provider.of<CartProvider>(context);
-    final cartItems = cartProvider.getCartItems.length;
     return Scaffold(
       // appBar: AppBar(
       //   title: Text(_pageList[_selectedIndex]['title']),
@@ -65,24 +63,26 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                   : const Icon(IconlyLight.category),
               label: "Category"),
           BottomNavigationBarItem(
-              icon: Badge(
-                toAnimate: true,
-                shape: BadgeShape.circle,
-                badgeColor: Colors.blue,
-                borderRadius: BorderRadius.circular(8),
-                // position: BadgePosition.topEnd(top: -7, end: -7),
-                badgeContent: FittedBox(
-                  child: Text(
-                    cartItems.toStringAsFixed(0),
-                    style: const TextStyle(
-                      color: Colors.white,
+              icon: Consumer<CartProvider>(builder: (_, myCart, ch) {
+                return Badge(
+                  toAnimate: true,
+                  shape: BadgeShape.circle,
+                  badgeColor: Colors.blue,
+                  borderRadius: BorderRadius.circular(8),
+                  // position: BadgePosition.topEnd(top: -7, end: -7),
+                  badgeContent: FittedBox(
+                    child: Text(
+                      myCart.getCartItems.length.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-                child: Icon(
-                  _selectedIndex == 2 ? IconlyBold.buy : IconlyLight.buy,
-                ),
-              ),
+                  child: Icon(
+                    _selectedIndex == 2 ? IconlyBold.buy : IconlyLight.buy,
+                  ),
+                );
+              }),
               label: "Cart"),
           BottomNavigationBarItem(
               icon: _selectedIndex == 3
