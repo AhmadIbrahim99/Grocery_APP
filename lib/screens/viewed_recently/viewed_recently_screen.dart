@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/providers/viewed_provider.dart';
 import 'package:grocery_app/screens/viewed_recently/viewed_recently_widget.dart';
 import 'package:grocery_app/services/utils.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/global_methods.dart';
 import '../../widgets/back_widget.dart';
@@ -22,10 +24,12 @@ class _ViewedRecentlyScreenState extends State<ViewedRecentlyScreen> {
   @override
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;
-    bool _isEmpty = true;
-    return _isEmpty
+    final viewedProvider = Provider.of<ViewedProductProvider>(context);
+    final viewedProductList =
+        viewedProvider.getViewedProductItems.values.toList().reversed.toList();
+    return viewedProductList.isEmpty
         ? const EmptyScreen(
-            buttonText: 'Shop Now',
+            buttonText: 'Your History is empty',
             imgPath: 'assets/images/history.png',
             subTitle: 'No products has been viewd yet!',
             title: 'Your history is Empty',
@@ -55,11 +59,13 @@ class _ViewedRecentlyScreenState extends State<ViewedRecentlyScreen> {
                       icon: const Icon(IconlyLight.delete))
                 ]),
             body: ListView.builder(
-              itemBuilder: (context, index) => const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3, vertical: 7),
-                child: ViewedRecentlyWidget(),
+              itemCount: viewedProductList.length,
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 7),
+                child: ChangeNotifierProvider.value(
+                    value: viewedProductList[index],
+                    child: const ViewedRecentlyWidget()),
               ),
-              itemCount: 10,
             ),
           );
   }
