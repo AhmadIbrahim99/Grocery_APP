@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/consts/firebase_const.dart';
 import 'package:grocery_app/provider/dark_theme_provider.dart';
+import 'package:grocery_app/screens/auth/login.dart';
 import 'package:grocery_app/screens/order/orders_screen.dart';
 import 'package:grocery_app/screens/viewed_recently/viewed_recently_screen.dart';
 import 'package:grocery_app/screens/whishlist/whishlist_screen.dart';
@@ -133,14 +135,19 @@ class _UserScreenState extends State<UserScreen> {
                 ),
                 _listTiles(
                     color: color,
-                    title: "Logout",
+                    title: user == null ? "Login" : "Logout",
                     icon: IconlyLight.logout,
-                    onPressed: () => GlobalMethods.warningDialog(
-                        function: () => print("Log Out"),
-                        context: context,
-                        hintText: "Are you sure you wanna leave Us ??!",
-                        textButton: "Yes",
-                        title: "Sign out")),
+                    onPressed: user == null
+                        ? () => GlobalMethods.navigateTo(
+                              ctx: context,
+                              name: LoginScreen.routeName,
+                            )
+                        : () => GlobalMethods.warningDialog(
+                            function: () => firebaseAuth.signOut(),
+                            context: context,
+                            hintText: "Are you sure you wanna leave Us ??!",
+                            textButton: "Yes",
+                            title: "Sign out")),
               ],
             ),
           ),

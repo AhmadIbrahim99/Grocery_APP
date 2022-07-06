@@ -13,7 +13,10 @@ import 'package:grocery_app/widgets/heart_btn.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../consts/firebase_const.dart';
 import '../providers/wishlist_provider.dart';
+import '../screens/auth/login.dart';
+import '../services/global_methods.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   static const routeName = "/ProductDetailScreen";
@@ -288,11 +291,26 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               onTap: () {},
                               borderRadius: BorderRadius.circular(10),
                               child: InkWell(
-                                onTap: () => _isInCart
+                                onTap: _isInCart
                                     ? null
-                                    : cartProvider.addProduct(
-                                        productId: productModel.id,
-                                        quantity: int.parse(_qTEC.text)),
+                                    : () {
+                                        if (user == null) {
+                                          GlobalMethods.errorDialog(
+                                              function: () =>
+                                                  GlobalMethods.navigateTo(
+                                                      ctx: context,
+                                                      name: LoginScreen
+                                                          .routeName),
+                                              title: 'Error',
+                                              hintText: 'Plz login first',
+                                              textButton: 'Ok',
+                                              context: context);
+                                          return;
+                                        }
+                                        cartProvider.addProduct(
+                                            productId: productModel.id,
+                                            quantity: int.parse(_qTEC.text));
+                                      },
                                 borderRadius: BorderRadius.circular(10),
                                 child: Padding(
                                   padding: const EdgeInsets.all(

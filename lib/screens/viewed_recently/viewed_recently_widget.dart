@@ -16,6 +16,9 @@ import 'package:grocery_app/services/utils.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../../consts/firebase_const.dart';
+import '../auth/login.dart';
+
 class ViewedRecentlyWidget extends StatefulWidget {
   const ViewedRecentlyWidget({Key? key}) : super(key: key);
 
@@ -87,8 +90,20 @@ class _ViewedRecentlyWidgetState extends State<ViewedRecentlyWidget> {
                   borderRadius: BorderRadius.circular(12.0),
                   onTap: _isInCart
                       ? null
-                      : () => cartProvider.addProduct(
-                          productId: getCurrentProduct.id, quantity: 1),
+                      : () {
+                          if (user == null) {
+                            GlobalMethods.errorDialog(
+                                function: () => GlobalMethods.navigateTo(
+                                    ctx: context, name: LoginScreen.routeName),
+                                title: 'Error',
+                                hintText: 'Plz login first',
+                                textButton: 'Ok',
+                                context: context);
+                            return;
+                          }
+                          cartProvider.addProduct(
+                              productId: getCurrentProduct.id, quantity: 1);
+                        },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Icon(

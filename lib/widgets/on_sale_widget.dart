@@ -14,8 +14,10 @@ import 'package:grocery_app/widgets/price_widget.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../consts/firebase_const.dart';
 import '../providers/cart_provider.dart';
 import '../providers/wishlist_provider.dart';
+import '../screens/auth/login.dart';
 
 class OnSaleWidget extends StatefulWidget {
   const OnSaleWidget({Key? key}) : super(key: key);
@@ -86,10 +88,23 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                         Row(
                           children: [
                             GestureDetector(
-                              onTap: () => cartProvider.addProduct(
-                                productId: productsOnSale.id,
-                                quantity: 1,
-                              ),
+                              onTap: () {
+                                if (user == null) {
+                                  GlobalMethods.errorDialog(
+                                      function: () => GlobalMethods.navigateTo(
+                                          ctx: context,
+                                          name: LoginScreen.routeName),
+                                      title: 'Error',
+                                      hintText: 'Plz login first',
+                                      textButton: 'Ok',
+                                      context: context);
+                                  return;
+                                }
+                                cartProvider.addProduct(
+                                  productId: productsOnSale.id,
+                                  quantity: 1,
+                                );
+                              },
                               child: Icon(
                                 _isInCart ? IconlyBold.bag2 : IconlyLight.bag2,
                                 size: 21,
