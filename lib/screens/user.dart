@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -30,6 +31,7 @@ class _UserScreenState extends State<UserScreen> {
     super.dispose();
   }
 
+  final User? user = firebaseAuth.currentUser;
   @override
   Widget build(BuildContext context) {
     final themState = Provider.of<DarkThemeProvider>(context);
@@ -143,7 +145,10 @@ class _UserScreenState extends State<UserScreen> {
                               name: LoginScreen.routeName,
                             )
                         : () => GlobalMethods.warningDialog(
-                            function: () => firebaseAuth.signOut(),
+                            function: () async => await firebaseAuth
+                                .signOut()
+                                .then((value) => GlobalMethods.navigateTo(
+                                    ctx: context, name: LoginScreen.routeName)),
                             context: context,
                             hintText: "Are you sure you wanna leave Us ??!",
                             textButton: "Yes",

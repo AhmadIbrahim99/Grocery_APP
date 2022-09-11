@@ -11,12 +11,12 @@ import 'package:grocery_app/services/utils.dart';
 import 'package:provider/provider.dart';
 
 class HeartButton extends StatelessWidget {
-  const HeartButton(
-      {Key? key, required this.productId, this.isInWishlist = false})
+  HeartButton({Key? key, required this.productId, this.isInWishlist = false})
       : super(key: key);
   final String productId;
   final bool isInWishlist;
 
+  final User? user = firebaseAuth.currentUser;
   @override
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;

@@ -1,4 +1,5 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -38,6 +39,8 @@ class _FeedsWidgetState extends State<FeedsWidget> {
     _quantityTextController.dispose();
     super.dispose();
   }
+
+  final User? user = firebaseAuth.currentUser;
 
   @override
   Widget build(BuildContext context) {

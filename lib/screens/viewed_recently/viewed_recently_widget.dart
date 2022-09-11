@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -27,6 +28,8 @@ class ViewedRecentlyWidget extends StatefulWidget {
 }
 
 class _ViewedRecentlyWidgetState extends State<ViewedRecentlyWidget> {
+  final User? user = firebaseAuth.currentUser;
+
   @override
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;
