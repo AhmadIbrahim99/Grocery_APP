@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/consts/constss.dart';
@@ -58,8 +60,19 @@ class _RegisterScreen extends State<RegisterScreen> {
         .createUserWithEmailAndPassword(
             email: _emailTextController.text.toLowerCase().trim(),
             password: _passTextController.text.trim())
-        .then((value) {
-      log('Succes');
+        .then((value) async {
+      final User? user = firebaseAuth.currentUser;
+
+      await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
+        'id': user.uid,
+        'name': _fullNameTextController.text,
+        'email': _emailTextController.text.toLowerCase(),
+        'shipping-address': _addressTextController.text,
+        'userWish': [],
+        'userCart': [],
+        'createdAt': Timestamp.now(),
+      });
+
       setState(() {
         _isLoading = false;
       });
