@@ -310,9 +310,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                               context: context);
                                           return;
                                         }
-                                        cartProvider.addProduct(
-                                            productId: productModel.id,
-                                            quantity: int.parse(_qTEC.text));
+                                        GlobalMethods.addToCart(
+                                            prodId: productId,
+                                            quantity: 1,
+                                            context: context);
                                       },
                                 borderRadius: BorderRadius.circular(10),
                                 child: Padding(

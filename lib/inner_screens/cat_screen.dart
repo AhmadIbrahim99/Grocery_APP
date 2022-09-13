@@ -21,6 +21,7 @@ class CategoryScreen extends StatefulWidget {
 class _CategoryScreenState extends State<CategoryScreen> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focus = FocusNode();
+  List<ProductModel> listProductsSearch = [];
   @override
   void dispose() {
     // TODO: implement dispose
@@ -71,7 +72,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         focusNode: _focus,
                         controller: _searchController,
                         onChanged: (value) {
-                          setState(() {});
+                          setState(() {
+                            listProductsSearch =
+                                productsProvider.searchQuery(value);
+                          });
                         },
                         decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
@@ -110,7 +114,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       ),
                     ),
                   ),
-                  isEmpty
+                  listProductsSearch.isEmpty &&
+                          _searchController.text.trim().isNotEmpty
                       ? Center(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -141,9 +146,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           crossAxisCount: 2,
                           childAspectRatio: size.width / (size.height * 0.6),
                           children: List.generate(
-                            products.length,
+                            _searchController.text.trim().isNotEmpty
+                                ? listProductsSearch.length
+                                : products.length,
                             (index) => ChangeNotifierProvider.value(
-                              value: products[index],
+                              value: _searchController.text.trim().isNotEmpty
+                                  ? listProductsSearch[index]
+                                  : products[index],
                               child: const FeedsWidget(),
                             ),
                           ),

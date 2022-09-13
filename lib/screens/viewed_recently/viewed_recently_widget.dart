@@ -104,8 +104,12 @@ class _ViewedRecentlyWidgetState extends State<ViewedRecentlyWidget> {
                                 context: context);
                             return;
                           }
-                          cartProvider.addProduct(
-                              productId: getCurrentProduct.id, quantity: 1);
+                          GlobalMethods.addToCart(
+                              prodId: getCurrentProduct.id,
+                              quantity: 1,
+                              context: context);
+                          // cartProvider.addProduct(
+                          //     productId: getCurrentProduct.id, quantity: 1);
                         },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

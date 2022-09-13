@@ -1,4 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:grocery_app/consts/firebase_const.dart';
+import 'package:uuid/uuid.dart';
 
 import '../widgets/text_widget.dart';
 
@@ -119,5 +124,33 @@ class GlobalMethods {
             ],
           );
         });
+  }
+
+  static Future<void> addToCart({
+    required String prodId,
+    required int quantity,
+    required BuildContext context,
+  }) async {
+    final User? user = firebaseAuth.currentUser;
+    final _uid = user!.uid;
+    final catId = const Uuid().v4();
+    await FirebaseFirestore.instance.collection('users').doc(_uid).update({
+      'userCart': FieldValue.arrayUnion([
+        {
+          'cartId': catId,
+          'productId': prodId,
+          'quantity': quantity,
+        }
+      ])
+    }).then((value) async {
+      await Fluttertoast.showToast(msg: "Item has been added to you'r cart");
+    }).onError((error, stackTrace) {
+      errorDialog(
+          function: () {},
+          title: 'Error',
+          hintText: '$error',
+          textButton: 'Ok',
+          context: context);
+    });
   }
 }

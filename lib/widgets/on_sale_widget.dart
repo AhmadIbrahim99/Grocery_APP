@@ -103,10 +103,14 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                                       context: context);
                                   return;
                                 }
-                                cartProvider.addProduct(
-                                  productId: productsOnSale.id,
-                                  quantity: 1,
-                                );
+                                GlobalMethods.addToCart(
+                                    prodId: productsOnSale.id,
+                                    quantity: 1,
+                                    context: context);
+                                // cartProvider.addProduct(
+                                //   productId: productsOnSale.id,
+                                //   quantity: 1,
+                                // );
                               },
                               child: Icon(
                                 _isInCart ? IconlyBold.bag2 : IconlyLight.bag2,

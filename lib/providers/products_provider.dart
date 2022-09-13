@@ -4,13 +4,14 @@ import 'package:flutter/cupertino.dart';
 import '../models/products.dart';
 
 class ProductsProvider with ChangeNotifier {
-  static final List<ProductModel> _productsList = [];
+  static List<ProductModel> _productsList = [];
   List<ProductModel> get getProducts => _productsList;
   List<ProductModel> get getOnSaleProducts =>
       _productsList.where((element) => element.isOnSale).toList();
 
   Future<void> fetchProductData() async {
     await FirebaseFirestore.instance.collection('products').get().then((value) {
+      _productsList.clear();
       value.docs.forEach((element) {
         _productsList.insert(
             0,
@@ -19,7 +20,7 @@ class ProductsProvider with ChangeNotifier {
                 title: element.get('title'),
                 imageUrl: element.get('imageUrl'),
                 productCategoryName: element.get('productCategoryName'),
-                price: element.get('price'),
+                price: double.parse(element.get('price').toString()),
                 salePrice: element.get('salePrice'),
                 isOnSale: element.get('isOnSale'),
                 isPiece: element.get('isPiece')));
@@ -36,6 +37,14 @@ class ProductsProvider with ChangeNotifier {
           .toLowerCase()
           .trim()
           .contains(category.toLowerCase().trim()))
+      .toList();
+
+  List<ProductModel> searchQuery(String productName) => _productsList
+      .where(
+        (element) => element.title.toLowerCase().contains(
+              productName.toLowerCase().trim(),
+            ),
+      )
       .toList();
 
   // static final List<ProductModel> _productsList = [

@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:grocery_app/consts/constss.dart';
 import 'package:grocery_app/providers/products_provider.dart';
 import 'package:grocery_app/screens/btm_bar.dart';
 import 'package:grocery_app/services/global_methods.dart';
@@ -26,8 +30,25 @@ class _FetchScreenState extends State<FetchScreen> {
     super.initState();
   }
 
+  List<String> images = Constss.imgPath;
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Stack(children: [
+        Image.asset(
+          images[Random().nextInt(images.length)],
+          fit: BoxFit.cover,
+          height: double.infinity,
+        ),
+        Container(
+          color: Colors.black.withOpacity(0.7),
+        ),
+        const Center(
+          child: SpinKitSpinningLines(
+            color: Colors.white,
+          ),
+        )
+      ]),
+    );
   }
 }
