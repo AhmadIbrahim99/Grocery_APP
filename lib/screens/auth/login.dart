@@ -16,6 +16,7 @@ import 'package:grocery_app/widgets/text_widget.dart';
 
 import '../../consts/constss.dart';
 import '../../consts/firebase_const.dart';
+import '../../fetch_screen.dart';
 import '../btm_bar.dart';
 import 'forget_password.dart';
 
@@ -280,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     AuthButton(
                       fct: () => GlobalMethods.navigateTo(
                         ctx: context,
-                        name: BottomBarScreen.routeName,
+                        name: FetchScreen.routeName,
                       ),
                       buttonText: 'Continue as a guest',
                       primary: Colors.black,

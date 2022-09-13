@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/consts/theme_data.dart';
+import 'package:grocery_app/fetch_screen.dart';
 import 'package:grocery_app/inner_screens/feeds_screen.dart';
 import 'package:grocery_app/inner_screens/on_sale_screen.dart';
 import 'package:grocery_app/inner_screens/product_details.dart';
@@ -9,7 +10,6 @@ import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/providers/products_provider.dart';
 import 'package:grocery_app/providers/viewed_provider.dart';
 import 'package:grocery_app/providers/wishlist_provider.dart';
-import 'package:grocery_app/screens/Home_Screen.dart';
 import 'package:grocery_app/screens/auth/forget_password.dart';
 import 'package:grocery_app/screens/auth/login.dart';
 import 'package:grocery_app/screens/auth/register.dart';
@@ -99,8 +99,9 @@ class _MyAppState extends State<MyApp> {
                   debugShowCheckedModeBanner: false,
                   title: 'Grocery',
                   theme: Styels.themeData(themeProvider.getDarkTheme, context),
-                  home: const BottomBarScreen(),
+                  home: const FetchScreen(),
                   routes: {
+                    FetchScreen.routeName: (context) => const FetchScreen(),
                     BottomBarScreen.routeName: (context) =>
                         const BottomBarScreen(),
                     OnSaleScreen.routeName: (context) => const OnSaleScreen(),

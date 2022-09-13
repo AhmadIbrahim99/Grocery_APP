@@ -11,6 +11,7 @@ import 'package:grocery_app/screens/loading_manager.dart';
 import 'package:grocery_app/services/utils.dart';
 import 'package:grocery_app/widgets/back_widget.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
+import '../../fetch_screen.dart';
 import '../../services/global_methods.dart';
 import '../../widgets/auth_button.dart';
 import 'forget_password.dart';
@@ -78,7 +79,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       });
 
       GlobalMethods.navigateReplacementTo(
-          ctx: context, name: BottomBarScreen.routeName);
+          ctx: context, name: FetchScreen.routeName);
     }).catchError((error) {
       setState(() {
         _isLoading = false;

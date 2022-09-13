@@ -50,7 +50,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: TextWidget(
-          text: "All Products",
+          text: categorName,
           color: color,
           textSize: 24.0,
           isTilte: true,
