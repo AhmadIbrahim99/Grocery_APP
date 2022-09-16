@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/providers/cart_provider.dart';
+import 'package:grocery_app/providers/products_provider.dart';
 import 'package:grocery_app/screens/cart/cart_widget.dart';
 import 'package:grocery_app/widgets/empty_screen.dart';
 import 'package:grocery_app/services/global_methods.dart';
@@ -17,6 +18,7 @@ class CartScreen extends StatelessWidget {
     final Color color = Utils(context).getColor;
     final Size size = Utils(context).getScreenSize;
     final cartProvider = Provider.of<CartProvider>(context);
+    final productProvider = Provider.of<ProductsProvider>(context);
     final cartItemsList =
         cartProvider.getCartItems.values.toList().reversed.toList();
 
@@ -29,6 +31,7 @@ class CartScreen extends StatelessWidget {
           )
         : Scaffold(
             appBar: AppBar(
+                automaticallyImplyLeading: false,
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 elevation: 0,
                 title: TextWidget(
@@ -40,7 +43,10 @@ class CartScreen extends StatelessWidget {
                 actions: [
                   IconButton(
                       onPressed: () => GlobalMethods.warningDialog(
-                          function: () => cartProvider.clearCart(),
+                          function: () async {
+                            await cartProvider.clearOnLineCart();
+                            cartProvider.clearLocalCart();
+                          },
                           title: 'Empty your cart?!',
                           hintText: 'Are you sure?!!',
                           textButton: 'yes',
@@ -51,10 +57,11 @@ class CartScreen extends StatelessWidget {
             body: Column(
               children: [
                 _checkOut(
-                  context: context,
-                  size: size,
-                  color: color,
-                ),
+                    context: context,
+                    size: size,
+                    color: color,
+                    cartProvider: cartProvider,
+                    productsProvider: productProvider),
                 Expanded(
                   child: ListView.builder(
                     itemCount: cartItemsList.length,
@@ -71,43 +78,52 @@ class CartScreen extends StatelessWidget {
   }
 
   Widget _checkOut(
-          {required BuildContext context,
-          required Size size,
-          required Color color}) =>
-      SizedBox(
-        width: double.infinity,
-        height: size.height * 0.1,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 13),
-          child: Row(
-            children: [
-              Material(
-                color: Colors.green,
+      {required BuildContext context,
+      required Size size,
+      required Color color,
+      required CartProvider cartProvider,
+      required ProductsProvider productsProvider}) {
+    double total = 0.0;
+    cartProvider.getCartItems.forEach((key, value) {
+      final getCurrent = productsProvider.getProductById(id: value.productsId);
+      total += (getCurrent.isOnSale ? getCurrent.salePrice : getCurrent.price) *
+          value.quantity;
+    });
+    return SizedBox(
+      width: double.infinity,
+      height: size.height * 0.1,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 13),
+        child: Row(
+          children: [
+            Material(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(10),
+              child: InkWell(
                 borderRadius: BorderRadius.circular(10),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: () {},
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextWidget(
-                      text: 'Order Now',
-                      color: Colors.white,
-                      textSize: 20,
-                    ),
+                onTap: () {},
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextWidget(
+                    text: 'Order Now',
+                    color: Colors.white,
+                    textSize: 20,
                   ),
                 ),
               ),
-              const Spacer(),
-              FittedBox(
-                child: TextWidget(
-                  text: 'Total: \$0.259',
-                  color: color,
-                  textSize: 17,
-                  isTilte: true,
-                ),
-              )
-            ],
-          ),
+            ),
+            const Spacer(),
+            FittedBox(
+              child: TextWidget(
+                text: 'Total: \$${total}',
+                color: color,
+                textSize: 17,
+                isTilte: true,
+              ),
+            )
+          ],
         ),
-      );
+      ),
+    );
+  }
 }

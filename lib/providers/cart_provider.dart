@@ -34,16 +34,13 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  final userCollection = FirebaseFirestore.instance.collection('users');
   Future<void> fetchCart() async {
     final User? user = firebaseAuth.currentUser;
-    if (user == null) return;
-    String _uid = user.uid;
-    if (_uid.isEmpty) return;
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(_uid)
-        .get()
-        .then((DocumentSnapshot snapshot) {
+
+    String _uid = user!.uid;
+
+    await userCollection.doc(_uid).get().then((DocumentSnapshot snapshot) {
       snapshot.get('userCart').forEach((element) {
         _cartItems.putIfAbsent(
             element['productId'],
@@ -68,12 +65,33 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeOneItem(String productId) {
+  Future<void> removeOneItem(
+      {required String cartId,
+      required String productId,
+      required int quantity}) async {
+    final User? user = firebaseAuth.currentUser;
+
+    await userCollection.doc(user!.uid).update({
+      'userCart': FieldValue.arrayRemove([
+        {'cartId': cartId, 'productId': productId, 'quantity': quantity}
+      ])
+    });
     _cartItems.remove(productId);
+    await fetchCart();
     notifyListeners();
   }
 
-  void clearCart() {
+  Future<void> clearOnLineCart() async {
+    final User? user = firebaseAuth.currentUser;
+
+    await userCollection
+        .doc(user!.uid)
+        .update({'userCart': FieldValue.arrayRemove([])});
+    _cartItems.clear();
+    notifyListeners();
+  }
+
+  void clearLocalCart() {
     _cartItems.clear();
     notifyListeners();
   }

@@ -169,8 +169,10 @@ class _CartWidgetState extends State<CartWidget> {
                       child: Column(
                         children: [
                           InkWell(
-                            onTap: () => cartProvider
-                                .removeOneItem(carttModel.productsId),
+                            onTap: () async => await cartProvider.removeOneItem(
+                                cartId: carttModel.id,
+                                productId: carttModel.productsId,
+                                quantity: carttModel.quantity),
                             child: const Icon(
                               CupertinoIcons.cart_badge_minus,
                               color: Colors.red,
@@ -185,7 +187,8 @@ class _CartWidgetState extends State<CartWidget> {
                             isInWishlist: _isInWishList,
                           ),
                           TextWidget(
-                            text: '\$${userPrice.toStringAsFixed(2)}',
+                            text:
+                                '\$${(userPrice * int.parse(_quantityTextController.text)).toStringAsFixed(2)}',
                             color: color,
                             textSize: 18,
                             maxLines: 1,

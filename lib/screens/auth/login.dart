@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       GlobalMethods.navigateReplacementTo(
-          ctx: context, name: BottomBarScreen.routeName);
+          ctx: context, name: FetchScreen.routeName);
     }).catchError((error) {
       setState(() {
         _isLoading = false;

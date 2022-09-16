@@ -1,11 +1,14 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:grocery_app/consts/constss.dart';
+import 'package:grocery_app/consts/firebase_const.dart';
 import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/providers/products_provider.dart';
+import 'package:grocery_app/providers/wishlist_provider.dart';
 import 'package:grocery_app/screens/btm_bar.dart';
 import 'package:grocery_app/services/global_methods.dart';
 import 'package:provider/provider.dart';
@@ -25,8 +28,17 @@ class _FetchScreenState extends State<FetchScreen> {
       final productsProvider =
           Provider.of<ProductsProvider>(context, listen: false);
       final cartProvider = Provider.of<CartProvider>(context, listen: false);
+      final wishListProvider =
+          Provider.of<WishListProvider>(context, listen: false);
+      final User? user = firebaseAuth.currentUser;
       await productsProvider.fetchProductData();
-      await cartProvider.fetchCart();
+      if (user != null) {
+        await cartProvider.fetchCart();
+        await wishListProvider.fetchWishList();
+      } else {
+        cartProvider.clearLocalCart();
+        wishListProvider.clearLocalWishList();
+      }
       GlobalMethods.navigateReplacementTo(
           ctx: context, name: BottomBarScreen.routeName);
     });

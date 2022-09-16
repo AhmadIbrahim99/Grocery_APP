@@ -46,7 +46,10 @@ class WhishListScreen extends StatelessWidget {
                 actions: [
                   IconButton(
                       onPressed: () => GlobalMethods.warningDialog(
-                          function: () => whishListProvider.clearWishList(),
+                          function: () async {
+                            await whishListProvider.clearOnLineWishList();
+                            whishListProvider.clearLocalWishList();
+                          },
                           title: 'Empty your Whishlist?!',
                           hintText: 'Are you sure?!!',
                           textButton: 'yes',

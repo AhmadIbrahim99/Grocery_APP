@@ -153,4 +153,31 @@ class GlobalMethods {
           context: context);
     });
   }
+
+  static Future<void> addToWishlist({
+    required String prodId,
+    required BuildContext context,
+  }) async {
+    final User? user = firebaseAuth.currentUser;
+    final _uid = user!.uid;
+    final wishlistId = const Uuid().v4();
+    await FirebaseFirestore.instance.collection('users').doc(_uid).update({
+      'userWish': FieldValue.arrayUnion([
+        {
+          'wishlistId': wishlistId,
+          'productId': prodId,
+        }
+      ])
+    }).then((value) async {
+      await Fluttertoast.showToast(
+          msg: "Item has been added to you'r wishlist");
+    }).onError((error, stackTrace) {
+      errorDialog(
+          function: () {},
+          title: 'Error',
+          hintText: '$error',
+          textButton: 'Ok',
+          context: context);
+    });
+  }
 }
