@@ -296,7 +296,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               child: InkWell(
                                 onTap: _isInCart
                                     ? null
-                                    : () {
+                                    : () async {
                                         if (user == null) {
                                           GlobalMethods.errorDialog(
                                               function: () =>
@@ -314,6 +314,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                             prodId: productId,
                                             quantity: 1,
                                             context: context);
+                                        await cartProvider.fetchCart();
                                       },
                                 borderRadius: BorderRadius.circular(10),
                                 child: Padding(

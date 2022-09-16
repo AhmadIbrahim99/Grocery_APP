@@ -158,7 +158,7 @@ class _FeedsWidgetState extends State<FeedsWidget> {
                 child: TextButton(
                   onPressed: _isInCart
                       ? null
-                      : () {
+                      : () async {
                           if (user == null) {
                             GlobalMethods.errorDialog(
                                 function: () => GlobalMethods.navigateTo(
@@ -169,10 +169,11 @@ class _FeedsWidgetState extends State<FeedsWidget> {
                                 context: context);
                             return;
                           }
-                          GlobalMethods.addToCart(
+                          await GlobalMethods.addToCart(
                               prodId: productModel.id,
                               quantity: int.parse(_quantityTextController.text),
                               context: context);
+                          await cartProvider.fetchCart();
                           // cartProvider.addProduct(
                           //   productId: productModel.id,
                           //   quantity: int.parse(

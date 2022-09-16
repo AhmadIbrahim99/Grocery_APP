@@ -91,7 +91,7 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                         Row(
                           children: [
                             GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 if (user == null) {
                                   GlobalMethods.errorDialog(
                                       function: () => GlobalMethods.navigateTo(
@@ -103,10 +103,11 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                                       context: context);
                                   return;
                                 }
-                                GlobalMethods.addToCart(
+                                await GlobalMethods.addToCart(
                                     prodId: productsOnSale.id,
                                     quantity: 1,
                                     context: context);
+                                await cartProvider.fetchCart();
                                 // cartProvider.addProduct(
                                 //   productId: productsOnSale.id,
                                 //   quantity: 1,

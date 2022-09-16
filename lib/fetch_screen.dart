@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:grocery_app/consts/constss.dart';
+import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/providers/products_provider.dart';
 import 'package:grocery_app/screens/btm_bar.dart';
 import 'package:grocery_app/services/global_methods.dart';
@@ -23,7 +24,9 @@ class _FetchScreenState extends State<FetchScreen> {
     Future.delayed(const Duration(microseconds: 5), () async {
       final productsProvider =
           Provider.of<ProductsProvider>(context, listen: false);
+      final cartProvider = Provider.of<CartProvider>(context, listen: false);
       await productsProvider.fetchProductData();
+      await cartProvider.fetchCart();
       GlobalMethods.navigateReplacementTo(
           ctx: context, name: BottomBarScreen.routeName);
     });

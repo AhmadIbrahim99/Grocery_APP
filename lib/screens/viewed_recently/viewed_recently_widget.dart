@@ -93,7 +93,7 @@ class _ViewedRecentlyWidgetState extends State<ViewedRecentlyWidget> {
                   borderRadius: BorderRadius.circular(12.0),
                   onTap: _isInCart
                       ? null
-                      : () {
+                      : () async {
                           if (user == null) {
                             GlobalMethods.errorDialog(
                                 function: () => GlobalMethods.navigateTo(
@@ -104,10 +104,11 @@ class _ViewedRecentlyWidgetState extends State<ViewedRecentlyWidget> {
                                 context: context);
                             return;
                           }
-                          GlobalMethods.addToCart(
+                          await GlobalMethods.addToCart(
                               prodId: getCurrentProduct.id,
                               quantity: 1,
                               context: context);
+                          await cartProvider.fetchCart();
                           // cartProvider.addProduct(
                           //     productId: getCurrentProduct.id, quantity: 1);
                         },
