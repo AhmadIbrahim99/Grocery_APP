@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:grocery_app/consts/firebase_const.dart';
+import 'package:grocery_app/fetch_screen.dart';
 import 'package:grocery_app/screens/btm_bar.dart';
 import 'package:grocery_app/screens/loading_manager.dart';
 import 'package:grocery_app/services/global_methods.dart';
@@ -36,8 +38,29 @@ class GoogleButton extends StatelessWidget {
     await firebaseAuth
         .signInWithCredential(GoogleAuthProvider.credential(
             idToken: googleAuth.idToken, accessToken: googleAuth.accessToken))
-        .then((value) {
-      GlobalMethods.navigateTo(ctx: context, name: BottomBarScreen.routeName);
+        .then((value) async {
+      if (!value.additionalUserInfo!.isNewUser) return;
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(value.user!.uid)
+          .set({
+        'id': value.user!.uid,
+        'name': value.user!.displayName,
+        'email': value.user!.email!.toLowerCase(),
+        'shipping-address': '',
+        'userWish': [],
+        'userCart': [],
+        'createdAt': Timestamp.now(),
+      }).then((value) {
+        GlobalMethods.navigateTo(ctx: context, name: FetchScreen.routeName);
+      }).onError((error, stackTrace) {
+        GlobalMethods.errorDialog(
+            function: () {},
+            title: 'Error',
+            hintText: '$error',
+            textButton: 'Ok',
+            context: context);
+      });
     }).onError((error, stackTrace) {
       GlobalMethods.errorDialog(
           function: () {},
