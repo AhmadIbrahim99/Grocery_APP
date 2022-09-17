@@ -46,7 +46,7 @@ class _HeartButtonState extends State<HeartButton> {
         setState(() {
           _isLoding = true;
         });
-        if (widget.isInWishlist == false && widget.isInWishlist != null) {
+        if (!widget.isInWishlist) {
           await GlobalMethods.addToWishlist(
               prodId: widget.productId, context: context);
         } else {

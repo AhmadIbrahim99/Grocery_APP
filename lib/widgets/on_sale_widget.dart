@@ -37,6 +37,7 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
     final Color color = utils.getColor;
     Size size = utils.getScreenSize;
     final productsOnSale = Provider.of<ProductModel>(context);
+    final productsProvider = Provider.of<ProductsProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
     bool _isInCart = cartProvider.getCartItems.containsKey(productsOnSale.id);
     final _wishListProvider = Provider.of<WishListProvider>(context);
@@ -103,6 +104,8 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                                       context: context);
                                   return;
                                 }
+                                if (cartProvider.getCartItems
+                                    .containsKey(productsOnSale.id)) return;
                                 await GlobalMethods.addToCart(
                                     prodId: productsOnSale.id,
                                     quantity: 1,
