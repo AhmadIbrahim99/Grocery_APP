@@ -1,10 +1,10 @@
-import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:grocery_app/consts/firebase_const.dart';
 import 'package:grocery_app/providers/cart_provider.dart';
+import 'package:grocery_app/providers/orders_provider.dart';
 import 'package:grocery_app/providers/products_provider.dart';
 import 'package:grocery_app/screens/cart/cart_widget.dart';
 import 'package:grocery_app/widgets/empty_screen.dart';
@@ -25,6 +25,7 @@ class CartScreen extends StatelessWidget {
     final productProvider = Provider.of<ProductsProvider>(context);
     final cartItemsList =
         cartProvider.getCartItems.values.toList().reversed.toList();
+    final orderProvider = Provider.of<OrderProvider>(context);
 
     return cartItemsList.isEmpty
         ? const EmptyScreen(
@@ -89,6 +90,8 @@ class CartScreen extends StatelessWidget {
       required Color color,
       required CartProvider cartProvider,
       required ProductsProvider productsProvider}) {
+    final orderProvider = Provider.of<OrderProvider>(context);
+
     double total = 0.0;
     cartProvider.getCartItems.forEach((key, value) {
       final getCurrent = productsProvider.getProductById(id: value.productsId);
@@ -141,7 +144,7 @@ class CartScreen extends StatelessWidget {
                     }).then((value) async {
                       await cartProvider.clearOnLineCart();
                       cartProvider.clearLocalCart();
-                      //TODO fetch orders here.
+                      await orderProvider.fetchorderData();
                       await Fluttertoast.showToast(
                           msg: 'your Order has been placed',
                           toastLength: Toast.LENGTH_SHORT,

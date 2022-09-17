@@ -53,10 +53,10 @@ class _RegisterScreen extends State<RegisterScreen> {
     final isValid = _formkey.currentState!.validate();
     FocusScope.of(context).unfocus();
     if (!isValid) return;
+    _formkey.currentState!.save();
     setState(() {
       _isLoading = true;
     });
-    _formkey.currentState!.save();
     await firebaseAuth
         .createUserWithEmailAndPassword(
             email: _emailTextController.text.toLowerCase().trim(),
