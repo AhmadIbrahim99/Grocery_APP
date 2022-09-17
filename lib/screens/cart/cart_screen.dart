@@ -1,6 +1,9 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:grocery_app/consts/firebase_const.dart';
 import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/providers/products_provider.dart';
 import 'package:grocery_app/screens/cart/cart_widget.dart';
@@ -9,6 +12,7 @@ import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/services/utils.dart';
 import 'package:grocery_app/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -42,15 +46,17 @@ class CartScreen extends StatelessWidget {
                 ),
                 actions: [
                   IconButton(
-                      onPressed: () => GlobalMethods.warningDialog(
-                          function: () async {
-                            await cartProvider.clearOnLineCart();
-                            cartProvider.clearLocalCart();
-                          },
-                          title: 'Empty your cart?!',
-                          hintText: 'Are you sure?!!',
-                          textButton: 'yes',
-                          context: context),
+                      onPressed: () {
+                        GlobalMethods.warningDialog(
+                            function: () async {
+                              await cartProvider.clearOnLineCart();
+                              cartProvider.clearLocalCart();
+                            },
+                            title: 'Empty your cart?!',
+                            hintText: 'Are you sure?!!',
+                            textButton: 'yes',
+                            context: context);
+                      },
                       color: color,
                       icon: const Icon(IconlyLight.delete))
                 ]),
@@ -101,7 +107,55 @@ class CartScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: InkWell(
                 borderRadius: BorderRadius.circular(10),
-                onTap: () {},
+                onTap: () {
+                  final orderId = const Uuid().v4();
+                  final uid = firebaseAuth.currentUser!.uid;
+                  final productProvider =
+                      Provider.of<ProductsProvider>(context, listen: false);
+                  if (uid.isEmpty) return;
+                  cartProvider.getCartItems.forEach((key, value) async {
+                    await FirebaseFirestore.instance
+                        .collection('orders')
+                        .doc(orderId)
+                        .set({
+                      'orderId': orderId,
+                      'userId': uid,
+                      'productId': value.productsId,
+                      'price': (productProvider
+                                  .getProductById(id: value.productsId)
+                                  .isOnSale
+                              ? productProvider
+                                  .getProductById(id: value.productsId)
+                                  .salePrice
+                              : productProvider
+                                  .getProductById(id: value.productsId)
+                                  .price) *
+                          value.quantity,
+                      'totalPrice': total,
+                      'quantity': value.quantity,
+                      'imageUrl': productProvider
+                          .getProductById(id: value.productsId)
+                          .imageUrl,
+                      'userName': firebaseAuth.currentUser!.displayName,
+                      'orderDate': Timestamp.now(),
+                    }).then((value) async {
+                      await cartProvider.clearOnLineCart();
+                      cartProvider.clearLocalCart();
+                      //TODO fetch orders here.
+                      await Fluttertoast.showToast(
+                          msg: 'your Order has been placed',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER);
+                    }).onError((error, stackTrace) {
+                      GlobalMethods.errorDialog(
+                          function: () {},
+                          title: 'Error',
+                          hintText: '$error',
+                          textButton: 'Ok',
+                          context: context);
+                    });
+                  });
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextWidget(

@@ -63,8 +63,10 @@ class _RegisterScreen extends State<RegisterScreen> {
             password: _passTextController.text.trim())
         .then((value) async {
       final User? user = firebaseAuth.currentUser;
-
-      await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
+      if (user == null) return;
+      await user.updateDisplayName(_fullNameTextController.text);
+      await user.reload();
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
         'id': user.uid,
         'name': _fullNameTextController.text,
         'email': _emailTextController.text.toLowerCase(),

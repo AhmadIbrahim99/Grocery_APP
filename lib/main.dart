@@ -5,7 +5,7 @@ import 'package:grocery_app/fetch_screen.dart';
 import 'package:grocery_app/inner_screens/feeds_screen.dart';
 import 'package:grocery_app/inner_screens/on_sale_screen.dart';
 import 'package:grocery_app/inner_screens/product_details.dart';
-import 'package:grocery_app/provider/dark_theme_provider.dart';
+import 'package:grocery_app/providers/dark_theme_provider.dart';
 import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/providers/products_provider.dart';
 import 'package:grocery_app/providers/viewed_provider.dart';

@@ -59,9 +59,7 @@ class WishListProvider with ChangeNotifier {
   Future<void> clearOnLineWishList() async {
     final User? user = firebaseAuth.currentUser;
 
-    await userCollection
-        .doc(user!.uid)
-        .update({'userwish': FieldValue.arrayRemove([])});
+    await userCollection.doc(user!.uid).update({'userWish': []});
     _WishListItems.clear();
     notifyListeners();
   }

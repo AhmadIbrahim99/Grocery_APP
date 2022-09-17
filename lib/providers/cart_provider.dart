@@ -84,9 +84,7 @@ class CartProvider with ChangeNotifier {
   Future<void> clearOnLineCart() async {
     final User? user = firebaseAuth.currentUser;
 
-    await userCollection
-        .doc(user!.uid)
-        .update({'userCart': FieldValue.arrayRemove([])});
+    await userCollection.doc(user!.uid).update({'userCart': []});
     _cartItems.clear();
     notifyListeners();
   }

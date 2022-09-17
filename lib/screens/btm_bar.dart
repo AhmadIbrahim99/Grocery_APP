@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:grocery_app/provider/dark_theme_provider.dart';
+import 'package:grocery_app/providers/dark_theme_provider.dart';
 import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/screens/categories.dart';
 import 'package:grocery_app/screens/home_screen.dart';

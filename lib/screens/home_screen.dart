@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/inner_screens/feeds_screen.dart';
 import 'package:grocery_app/inner_screens/on_sale_screen.dart';
-import 'package:grocery_app/provider/dark_theme_provider.dart';
+import 'package:grocery_app/providers/dark_theme_provider.dart';
 import 'package:grocery_app/services/global_methods.dart';
 import 'package:grocery_app/services/utils.dart';
 import 'package:grocery_app/widgets/feed_items_widget.dart';
