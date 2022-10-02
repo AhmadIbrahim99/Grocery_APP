@@ -49,9 +49,10 @@ dependencies:
   fluttertoast: ^8.0.9
   cloud_firestore: ^3.4.7
   uuid: ^3.0.6
-  integration_test_preview: ^0.1.1
 
 dev_dependencies:
+  integration_test:
+    sdk: flutter
   flutter_test:
     sdk: flutter
 
