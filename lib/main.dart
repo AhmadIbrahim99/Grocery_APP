@@ -105,7 +105,7 @@ class _MyAppState extends State<MyApp> {
                   debugShowCheckedModeBanner: false,
                   title: 'Grocery',
                   theme: Styels.themeData(themeProvider.getDarkTheme, context),
-                  home: const FetchScreen(),
+                  home: const RegisterScreen(),
                   routes: {
                     FetchScreen.routeName: (context) => const FetchScreen(),
                     BottomBarScreen.routeName: (context) =>
