@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/consts/constss.dart';
 import 'package:grocery_app/consts/firebase_const.dart';
+import 'package:grocery_app/consts/mykeys.dart';
 import 'package:grocery_app/screens/btm_bar.dart';
 import 'package:grocery_app/screens/loading_manager.dart';
 import 'package:grocery_app/services/utils.dart';
@@ -184,6 +185,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                       child: Column(
                         children: [
                           TextFormField(
+                            key: const Key(MyKeys.NAMEREG),
                             textInputAction: TextInputAction.next,
                             onEditingComplete: () => FocusScope.of(context)
                                 .requestFocus(_emailFocus),
@@ -207,6 +209,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                             height: 20,
                           ),
                           TextFormField(
+                            key: const Key(MyKeys.EMAILREG),
                             focusNode: _emailFocus,
                             textInputAction: TextInputAction.next,
                             onEditingComplete: () =>
@@ -231,6 +234,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                             height: 20,
                           ),
                           TextFormField(
+                            key: const Key(MyKeys.PASSWORDREG),
                             focusNode: _passFocus,
                             obscureText: _obscureText,
                             textInputAction: TextInputAction.next,
@@ -262,6 +266,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                             height: 20,
                           ),
                           TextFormField(
+                            key: const Key(MyKeys.ADDRESSREG),
                             focusNode: _addressFocus,
                             textInputAction: TextInputAction.done,
                             onEditingComplete: _submitFormForRegister,
@@ -310,7 +315,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                       height: 10,
                     ),
                     AuthButton(
-                        fct: _submitFormForRegister, buttonText: 'Sign up'),
+                        key: const Key(MyKeys.SIGNUP_BUTTON),
+                        fct: _submitFormForRegister,
+                        buttonText: 'Sign up'),
                     const SizedBox(
                       height: 10,
                     ),
