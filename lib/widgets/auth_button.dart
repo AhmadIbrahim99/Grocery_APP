@@ -8,16 +8,19 @@ class AuthButton extends StatelessWidget {
       {Key? key,
       required this.fct,
       required this.buttonText,
-      this.primary = Colors.white38})
+      this.primary = Colors.white38,
+      this.keyName})
       : super(key: key);
   final Function fct;
   final String buttonText;
   final Color primary;
+  final String? keyName;
 
   @override
   Widget build(BuildContext context) => SizedBox(
         width: double.infinity,
         child: ElevatedButton(
+          key: keyName != null ? Key(keyName!) : null,
           style: ElevatedButton.styleFrom(primary: primary),
           onPressed: () => fct(),
           child: TextWidget(

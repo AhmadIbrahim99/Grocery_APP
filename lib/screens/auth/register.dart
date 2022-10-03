@@ -247,6 +247,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                             decoration: InputDecoration(
                               hintText: 'Password',
                               suffixIcon: IconButton(
+                                  key: const Key(MyKeys.SHOW_PASSOWRD),
                                   onPressed: () => setState(
                                       () => _obscureText = !_obscureText),
                                   icon: Icon(_obscureText
@@ -315,7 +316,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                       height: 10,
                     ),
                     AuthButton(
-                        key: const Key(MyKeys.SIGNUP_BUTTON),
+                        keyName: MyKeys.SIGNUP_BUTTON,
                         fct: _submitFormForRegister,
                         buttonText: 'Sign up'),
                     const SizedBox(

@@ -6,4 +6,5 @@ mixin MyKeys {
   static const String EMAILREG = "EMAILREG";
   static const String ADDRESSREG = "ADDRESSREG";
   static const String SIGNUP_BUTTON = "SIGNUP_BUTTON";
+  static const String SHOW_PASSOWRD = "SHOW_PASSOWRD";
 }
